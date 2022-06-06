@@ -1,13 +1,13 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte";
-  export let data;
+  export let graphData: { x: number[], y: number[], type: string };
 
   onMount(() => {
-    console.log(data);
+    console.log(graphData);
     let plotDiv = document.getElementById("plotDiv");
     let Plot = new Plotly.newPlot(
       plotDiv,
-      [data],
+      [graphData],
       {
         title: false,
         height: 200,

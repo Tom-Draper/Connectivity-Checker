@@ -1,15 +1,9 @@
 <script lang="ts">
-  // import Switch from './components/Switch.svelte'
   import Graph from './components/Graph.svelte'
 
-	let darkmode: string = "off";
-
   let pings: any = [] 
-
   for (let i = 0; i < 95; i++) {
-    // pings.push([200, Math.floor(Math.random() * 600) + Math.floor(Math.random() * 600)])
     pings.push([200, Math.floor(Math.random() * 100)* Math.random() + Math.floor(Math.random() * 10)])
-    // pings.push([200, Math.floor(Math.random() * 6?00)* Math.random() + Math.floor(Math.random() * 100)])
   }
   for (let i = 0; i < 5; i++) {
     pings.push([404, -1])
@@ -17,10 +11,16 @@
   for (let i = 0; i < 50; i++) {
     pings.push([200, Math.floor(Math.random() * 100)* Math.random() + Math.floor(Math.random() * 10)])
   }
-
-
   let filler: null[][] = Array(150 - pings.length).fill([null, null]);
   pings = filler.concat(pings);
+
+  let data = {
+    live: true,
+    time: new Date(Date.now()).toUTCString(),
+    data: pings,
+  }
+
+
 
   let x: number[] = [];
   let y: number[] = [];
@@ -32,7 +32,7 @@
     }
     x.push(i+1);
   }
-  let data = {
+  let graphData = {
     x: x,
     y: y,
     type: "bar"
@@ -46,11 +46,7 @@
   }
   let uptime = ((upCounts / pings.length) * 100).toFixed(1);
 
-  let now = new Date(Date.now()).toUTCString();
-
-  let live = true;
-
-  darkmode = "off";
+  let darkmode = "off";
   if (darkmode == "on") {
     document.documentElement.style.setProperty("--background", "#23272a");
     document.documentElement.style.setProperty("--card", "#1d2023");
@@ -71,14 +67,14 @@
       </div>
     </div> -->
     <div class="header">
-      {#if live}
+      {#if data.live}
         <img class="big-tick" src="./img/bigtick.png" alt="" />
         <h2 class="status">All services are online</h2>
       {:else}
         <img class="big-cross" src="./img/cross.webp" alt="" />
         <h2 class="status">Service down</h2>
       {/if}
-      <div class="last-updated">{now}</div>
+      <div class="last-updated">{data.time}</div>
     </div>
     <div class="pings-container">
       <h4 class="name">pldashboard.com</h4>
@@ -101,7 +97,7 @@
       </div>
       <div class="last-hours">Last 150 hours</div>
       <div class="ping-graph">
-        <Graph {data}></Graph>
+        <Graph {graphData}></Graph>
       </div>
     </div>
   </div>
@@ -183,7 +179,7 @@
         font-size: 0.8em;
         margin-top: auto;
         color: var(--secondary-text);
-        margin: 4px 0 40px 0;
+        margin: 4px 0 20px 0;
         
       }
       .pings {
