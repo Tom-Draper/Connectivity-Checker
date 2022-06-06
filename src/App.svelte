@@ -1,5 +1,7 @@
 <script lang="ts">
-  import Toggle from './components/Toggle.svelte'
+  import Switch from './components/Switch.svelte'
+
+	let darkmode: string = "off";
 
   let pings: any = [
     [200, 354],
@@ -154,13 +156,23 @@
   let uptime = ((upCounts / pings.length) * 100).toFixed(1);
 
   let now = new Date(Date.now()).toUTCString();
+
+  if (darkmode == "on") {
+    document.documentElement.style.setProperty("--background", "black");
+  } else {
+    document.documentElement.style.setProperty("--background", "white");
+  }
 </script>
 
 <main>
   <div class="content">
-    <div class="darkmode-toggle">
-      <Toggle></Toggle>
-    </div>
+
+    <!-- <div class="darkmode-toggle-container">
+      <div class="darkmode-toggle">
+        <Switch bind:value={darkmode} label="" design="slider" fontSize={12}/>
+        {darkmode}
+      </div>
+    </div> -->
     <div class="header">
       <img class="big-tick" src="./img/bigtick.png" alt="" />
       <h2 class="status">All services are online</h2>
@@ -213,10 +225,10 @@
     height: auto;
     margin: 0 auto;
     padding: 50px 0;
-    .darkmode-toggle {
+    .darkmode-toggle-container {
       position: absolute;
-      top: 50px;
-      right: 75px;
+      top: 20px;
+      right: 20px;
     }
     .header {
       padding: 100px 0 100px;
@@ -261,10 +273,11 @@
           border-radius: 3px;
         }
         .ok {
-          background: rgb(60, 214, 60);
+          background: rgb(76, 226, 76);
         }
         .failed {
           background: rgb(240, 69, 69);
+          background: #FF6566;
         }
         .empty {
           background: rgb(229, 229, 229);
