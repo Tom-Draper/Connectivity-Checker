@@ -9,11 +9,12 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/joho/godotenv"
+	"github.com/go-ping/ping"
 )
 
 // album represents data about a record album.
@@ -33,21 +34,10 @@ type Data struct {
 	Pings []Ping
 }
 
-// var pings = []Ping{
-// 	{ID: 1, Status: 200, ResponseTime: 59},
-// 	{ID: 2, Status: 200, ResponseTime: 102},
-// 	{ID: 3, Status: 200, ResponseTime: 64},
-// 	{ID: 4, Status: 200, ResponseTime: 60},
-// 	{ID: 5, Status: 200, ResponseTime: 59},
-// 	{ID: 6, Status: 200, ResponseTime: 56},
-// 	{ID: 7, Status: 200, ResponseTime: 69},
-// }
-
 func main() {
 	router := gin.Default()
 	router.GET("/data/:id", getData)
-	// router.GET("/data/:id", getAlbumByID)
-	// router.POST("/albums", postAlbums)
+	router.GET("/check", checkConnectivity)
 
 	router.Run("localhost:8080")
 }
@@ -98,4 +88,18 @@ func getData(c *gin.Context) {
 	id := c.Param("id")
 	data := fetchData(id)
 	c.IndentedJSON(http.StatusOK, data)
+}
+
+func checkConnectivity(c *gin.Context) {
+	pinger, err := ping.NewPinger("www.google.com")
+	if err != nil {
+		panic(err)
+	}
+	pinger.Count = 3
+	err = pinger.Run() // Blocks until finished.
+	if err != nil {
+		panic(err)
+	}
+	stats := pinger.Statistics() // get send/receive/duplicate/rtt stats
+	print(stats)
 }
