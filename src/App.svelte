@@ -1,5 +1,6 @@
 <script lang="ts">
-  import Switch from './components/Switch.svelte'
+  // import Switch from './components/Switch.svelte'
+  import Graph from './components/Graph.svelte'
 
 	let darkmode: string = "off";
 
@@ -147,6 +148,22 @@
   let filler: null[][] = Array(150 - pings.length).fill([null, null]);
   pings = filler.concat(pings);
 
+  let x: number[] = [];
+  let y: number[] = [];
+  for (let i = 0; i < pings.length; i++) {
+    if (pings[i][1] == null || pings[i][1] < 0) {
+      y.push(0);
+    } else {
+      y.push(pings[i][1]);
+    }
+    x.push(i+1);
+  }
+  let data = {
+    x: x,
+    y: y,
+    type: "bar"
+  }
+
   let upCounts = 0;
   for (let i = 0; i < pings.length; i++) {
     if (pings[i][0] == 200) {
@@ -157,16 +174,21 @@
 
   let now = new Date(Date.now()).toUTCString();
 
+
+  darkmode = "off";
   if (darkmode == "on") {
-    document.documentElement.style.setProperty("--background", "black");
+    document.documentElement.style.setProperty("--background", "#23272a");
+    document.documentElement.style.setProperty("--card", "#1d2023");
+    document.documentElement.style.setProperty("--text", "white");
   } else {
     document.documentElement.style.setProperty("--background", "white");
+    document.documentElement.style.setProperty("--card", "white");
+    document.documentElement.style.setProperty("--text", "black");
   }
 </script>
 
 <main>
   <div class="content">
-
     <!-- <div class="darkmode-toggle-container">
       <div class="darkmode-toggle">
         <Switch bind:value={darkmode} label="" design="slider" fontSize={12}/>
@@ -197,6 +219,8 @@
           {/if}
         {/each}
       </div>
+      <div class="divider"></div>
+      <Graph {data}></Graph>
     </div>
   </div>
 </main>
@@ -204,12 +228,16 @@
 <style type="scss">
   @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
 
-  $background: rgb(248, 248, 248);
-  $text: black;
-
+  :root {
+    --background: rgb(248, 248, 248);
+    --card: white;
+    --text: black;
+  }
+  
   :global(body) {
-    background: $background;
+    background: var(--background);
     padding: 0;
+    color: #1d2023;
   }
 
   main {
@@ -217,7 +245,7 @@
     max-width: 240px;
     margin: 0 auto;
     font-family: "Poppins";
-    color: $text;
+    color: var(--text);
   }
 
   .content {
@@ -246,7 +274,7 @@
     .pings-container {
       padding: 2.2rem 4rem;
       border-radius: 5px;
-      background: white;
+      background: var(--card);
       box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
       .name {
         width: fit-content;
