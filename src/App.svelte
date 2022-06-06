@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Toggle from './components/Toggle.svelte'
+
   let pings: any = [
     [200, 354],
     [200, 456],
@@ -143,8 +145,6 @@
   let filler: null[][] = Array(150 - pings.length).fill([null, null]);
   pings = filler.concat(pings);
 
-  console.log(pings);
-
   let upCounts = 0;
   for (let i = 0; i < pings.length; i++) {
     if (pings[i][0] == 200) {
@@ -158,6 +158,9 @@
 
 <main>
   <div class="content">
+    <div class="darkmode-toggle">
+      <Toggle></Toggle>
+    </div>
     <div class="header">
       <img class="big-tick" src="./img/bigtick.png" alt="" />
       <h2 class="status">All services are online</h2>
@@ -187,9 +190,10 @@
 </main>
 
 <style type="scss">
-  $background: rgb(248, 248, 248);
-
   @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+
+  $background: rgb(248, 248, 248);
+  $text: black;
 
   :global(body) {
     background: $background;
@@ -201,14 +205,19 @@
     max-width: 240px;
     margin: 0 auto;
     font-family: "Poppins";
+    color: $text;
   }
 
   .content {
     width: fit-content;
-    /* max-width: 900px; */
     height: auto;
     margin: 0 auto;
     padding: 50px 0;
+    .darkmode-toggle {
+      position: absolute;
+      top: 50px;
+      right: 75px;
+    }
     .header {
       padding: 100px 0 100px;
       .big-tick {
@@ -269,4 +278,7 @@
       max-width: none;
     }
   }
+
+
+
 </style>
