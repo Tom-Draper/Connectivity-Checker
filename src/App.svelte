@@ -48,6 +48,7 @@
 
   let now = new Date(Date.now()).toUTCString();
 
+  let live = false;
 
   darkmode = "off";
   if (darkmode == "on") {
@@ -70,8 +71,13 @@
       </div>
     </div> -->
     <div class="header">
-      <img class="big-tick" src="./img/bigtick.png" alt="" />
-      <h2 class="status">All services are online</h2>
+      {#if live}
+        <img class="big-tick" src="./img/bigtick.png" alt="" />
+        <h2 class="status">All services are online</h2>
+      {:else}
+        <img class="big-cross" src="./img/cross.webp" alt="" />
+        <h2 class="status">Service down</h2>
+      {/if}
       <div class="last-updated">{now}</div>
     </div>
     <div class="pings-container">
@@ -107,6 +113,7 @@
   :root {
     --background: rgb(248, 248, 248);
     --card: white;
+    --secondary-text: #949494;
     --text: black;
   }
   
@@ -136,11 +143,12 @@
     }
     .header {
       padding: 100px 0 100px;
+      .big-cross,
       .big-tick {
         width: 120px;
       }
       .last-updated {
-        color: #949494;
+        color: var(--secondary-text);
       }
       .status {
         font-size: 2em;
@@ -174,7 +182,7 @@
         text-align: left;
         font-size: 0.8em;
         margin-top: auto;
-        color: #949494;
+        color: var(--secondary-text);
         margin: 4px 0 40px 0;
         
       }
