@@ -4,146 +4,20 @@
 
 	let darkmode: string = "off";
 
-  let pings: any = [
-    [200, 354],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [404, -1],
-    [404, -1],
-    [404, -1],
-    [404, -1],
-    [404, -1],
-    [404, -1],
-    [404, -1],
-    [200, 456],
-    [200, 456],
-    [404, -1],
-    [404, -1],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-    [200, 456],
-  ];
+  let pings: any = [] 
+
+  for (let i = 0; i < 95; i++) {
+    // pings.push([200, Math.floor(Math.random() * 600) + Math.floor(Math.random() * 600)])
+    pings.push([200, Math.floor(Math.random() * 100)* Math.random() + Math.floor(Math.random() * 10)])
+    // pings.push([200, Math.floor(Math.random() * 6?00)* Math.random() + Math.floor(Math.random() * 100)])
+  }
+  for (let i = 0; i < 5; i++) {
+    pings.push([404, -1])
+  }
+  for (let i = 0; i < 50; i++) {
+    pings.push([200, Math.floor(Math.random() * 100)* Math.random() + Math.floor(Math.random() * 10)])
+  }
+
 
   let filler: null[][] = Array(150 - pings.length).fill([null, null]);
   pings = filler.concat(pings);
@@ -210,17 +84,19 @@
       </div>
       <div class="pings">
         {#each pings as ping}
-          {#if ping[0] == 200}
-            <div class="ping ok" />
-          {:else if ping[0] == 404}
-            <div class="ping failed" />
-          {:else}
-            <div class="ping empty" />
-          {/if}
+        {#if ping[0] == 200}
+        <div class="ping ok" />
+        {:else if ping[0] == 404}
+        <div class="ping failed" />
+        {:else}
+        <div class="ping empty" />
+        {/if}
         {/each}
       </div>
-      <div class="divider"></div>
-      <Graph {data}></Graph>
+      <div class="last-hours">Last 150 hours</div>
+      <div class="ping-graph">
+        <Graph {data}></Graph>
+      </div>
     </div>
   </div>
 </main>
@@ -264,7 +140,7 @@
         width: 120px;
       }
       .last-updated {
-        color: rgb(148, 148, 148);
+        color: #949494;
       }
       .status {
         font-size: 2em;
@@ -272,7 +148,7 @@
       }
     }
     .pings-container {
-      padding: 2.2rem 4rem;
+      padding: 2.2rem 5rem;
       border-radius: 5px;
       background: var(--card);
       box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
@@ -282,7 +158,7 @@
         font-size: 1em;
       }
       .uptime {
-        width: fit-content;
+        // width: fit-content;
         margin-bottom: 5px;
         font-size: 0.9em;
         display: flex;
@@ -291,6 +167,16 @@
           height: 20px;
           margin-right: 6px;
         }
+      }
+      .last-hours {
+        // margin-left: auto;
+        // flex-grow: 1;
+        text-align: left;
+        font-size: 0.8em;
+        margin-top: auto;
+        color: #949494;
+        margin: 4px 0 40px 0;
+        
       }
       .pings {
         display: flex;
@@ -311,6 +197,9 @@
           background: rgb(229, 229, 229);
         }
       }
+    }
+    .ping-graph {
+      margin-right: -50px;
     }
   }
 
