@@ -12,6 +12,7 @@
         title: false,
         height: 200,
         margin: { r: 50, l: 0, t: 20, b: 20, pad: 5 },
+        colorway: ['#c9c9c9'],
         yaxis: { side: "right", ticksuffix: "ms", color: "#949494" },
         xaxis: { color: "white" }
       },

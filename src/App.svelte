@@ -48,7 +48,7 @@
 
   let now = new Date(Date.now()).toUTCString();
 
-  let live = false;
+  let live = true;
 
   darkmode = "off";
   if (darkmode == "on") {
@@ -142,10 +142,10 @@
       right: 20px;
     }
     .header {
-      padding: 100px 0 100px;
+      padding: 80px 0 100px;
       .big-cross,
       .big-tick {
-        width: 120px;
+        width: 130px;
       }
       .last-updated {
         color: var(--secondary-text);
@@ -156,7 +156,7 @@
       }
     }
     .pings-container {
-      padding: 2.2rem 5rem;
+      padding: 2.4rem 5rem 2rem;
       border-radius: 5px;
       background: var(--card);
       box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
@@ -202,7 +202,7 @@
           background: #FF6566;
         }
         .empty {
-          background: rgb(229, 229, 229);
+          background: #e5e5e5;
         }
       }
     }
