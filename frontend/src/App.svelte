@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import Graph from "./components/Graph.svelte";
 
-  function createGraphData(pings: {loss: number, responseTime: number}[]) {
+  function createGraphData(pings: {loss: number, responseTime: number}[]): {x: number[], y: number[], type: string} {
     let x: number[] = [];
     let y: number[] = [];
     for (let i = 0; i < pings.length; i++) {
@@ -21,19 +21,7 @@
     return graphData
   }
 
-  let graphData = undefined;
-  let data = undefined;
-  onMount(async function () {
-    const response = await fetch("http://localhost:8080/data/pldashboard.com");
-    let json = await response.json();
-    
-    let pings = json.Pings;
-    let filler: null[][] = Array(150 - pings.length).fill({
-      loss: null,
-      responseTime: null,
-    });
-    
-    
+  function calcUptime(pings: {loss: number, responseTime: number}[]) {
     let upCounts = 0;
     for (let i = 0; i < pings.length; i++) {
       if (pings[i].responseTime > 0) {
@@ -41,8 +29,25 @@
       }
     }
     let uptime = ((upCounts / pings.length) * 100).toFixed(1);
+    return uptime;
+  }
+
+  let graphData: {x: number[], y: number[], type: string};
+  let data: {live: boolean, name: string, time: string, uptime: string, data: {loss: number, responseTime: number}[]};
+  onMount(async function () {
+    const response = await fetch("http://localhost:8080/data/pldashboard.com");
+    let json = await response.json();
     
-    pings = filler.concat(pings);
+    let pings = json.Pings;
+    
+    let uptime = calcUptime(pings);
+    
+    let filler: null[][] = Array(150 - pings.length).fill({
+      loss: null,
+      responseTime: null,
+    });
+    pings = filler.concat(pings);  // Pad with null values to 150 vals
+
     graphData = createGraphData(pings)
     
     data = {
@@ -55,38 +60,22 @@
 
     console.log(data);
 
-    // let darkmode = "off";
-    // if (darkmode == "on") {
-    //   document.documentElement.style.setProperty("--background", "#23272a");
-    //   document.documentElement.style.setProperty("--card", "#1d2023");
-    //   document.documentElement.style.setProperty("--text", "white");
-    // } else {
-    //   document.documentElement.style.setProperty("--background", "white");
-    //   document.documentElement.style.setProperty("--card", "white");
-    //   document.documentElement.style.setProperty("--text", "black");
-    // }
   });
-
-  // let pings: any = []
-  // for (let i = 0; i < 95; i++) {
-  //   pings.push([200, Math.floor(Math.random() * 100)* Math.random() + Math.floor(Math.random() * 10)])
-  // }
-  // for (let i = 0; i < 5; i++) {
-  //   pings.push([404, -1])
-  // }
-  // for (let i = 0; i < 50; i++) {
-  //   pings.push([200, Math.floor(Math.random() * 100)* Math.random() + Math.floor(Math.random() * 10)])
-  // }
+  
+  let darkmode = "off";
+  if (darkmode == "on") {
+    document.documentElement.style.setProperty("--background", "#23272a");
+    document.documentElement.style.setProperty("--card", "#1d2023");
+    document.documentElement.style.setProperty("--text", "white");
+  } else {
+    document.documentElement.style.setProperty("--background", "white");
+    document.documentElement.style.setProperty("--card", "white");
+    document.documentElement.style.setProperty("--text", "black");
+  }
 </script>
 
 <main>
   <div class="content">
-    <!-- <div class="darkmode-toggle-container">
-      <div class="darkmode-toggle">
-        <Switch bind:value={darkmode} label="" design="slider" fontSize={12}/>
-        {darkmode}
-      </div>
-    </div> -->
     {#if data != undefined}
       <div class="header">
         {#if data.live}
@@ -159,11 +148,6 @@
     height: auto;
     margin: 0 auto;
     padding: 50px 0;
-    // .darkmode-toggle-container {
-    //   position: absolute;
-    //   top: 20px;
-    //   right: 20px;
-    // }
     .header {
       padding: 80px 0 100px;
       .big-cross,
@@ -189,7 +173,6 @@
         font-size: 1em;
       }
       .uptime {
-        // width: fit-content;
         margin-bottom: 5px;
         font-size: 0.9em;
         display: flex;
@@ -200,8 +183,6 @@
         }
       }
       .last-hours {
-        // margin-left: auto;
-        // flex-grow: 1;
         text-align: left;
         font-size: 0.8em;
         margin-top: auto;
