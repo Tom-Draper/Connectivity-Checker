@@ -34,7 +34,7 @@
   let graphData: {x: number[], y: number[], type: string};
   let data: {live: boolean, name: string, time: Date, uptime: string, pings: {loss: number, response: number, time: string}[]};
   onMount(async function () {
-    const response = await fetch("http://localhost:8080/data/notion-courses.netlify.app");
+    const response = await fetch("https://connectivity-checker.herokuapp.com/data/pldashboard.com");
     let json = await response.json();
     
     let pings = json.pings;
