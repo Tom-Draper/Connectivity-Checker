@@ -1,1 +1,1 @@
-web: backend/bin/main
+worker: backend/bin/main
