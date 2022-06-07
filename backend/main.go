@@ -22,7 +22,7 @@ type Ping struct {
 	ResponseTime int64   `json:"responseTime"`
 }
 
-type Data struct {
+type Record struct {
 	Name  string
 	Pings []Ping
 }
@@ -33,10 +33,26 @@ func periodicallyPing() {
 		go testConnectivity("pldashboard.com")
 	}
 }
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
 
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Credentials", "true")
+		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Header("Access-Control-Allow-Methods", "POST,HEAD,PATCH, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
+}
 func main() {
 	go periodicallyPing()
 	router := gin.Default()
+	router.Use(CORSMiddleware())
 	router.GET("/data/:id", getData)
 
 	router.Run("localhost:8080")
@@ -71,9 +87,9 @@ func fetchData(id string) Data {
 	// collection := client.Database("Connectivity").Collection("Pings")
 
 	collection := connectToDatabase()
-
+	print(id)
 	var result Data
-	filter := bson.D{{"name", "pldashboard.com"}}
+	filter := bson.D{{"name", id}}
 
 	err := collection.FindOne(context.TODO(), filter).Decode(&result)
 	if err != nil {
@@ -126,7 +142,7 @@ func updateDatabase(address string, ping Ping) {
 	// 	bson.D{"$project", bson.D{{"name", address}, {bson.D{{"$size", "$pings"}}}}})
 
 	// Remove oldest ping (if more than 150 pings collected)
-	pingsCount := 160
+	pingsCount := 16
 	if pingsCount > 150 {
 		filter = bson.D{{"name", address}}
 		update = bson.D{{"$pop", bson.D{{"pings", -1}}}}
