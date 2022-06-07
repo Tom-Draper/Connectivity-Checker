@@ -25,8 +25,8 @@ import (
 // }
 
 type Ping struct {
-	Status       int16   `json:"status"`
-	ResponseTime float64 `json:"responseTime"`
+	Loss         float64 `json:"loss"`
+	ResponseTime int64   `json:"responseTime"`
 }
 
 type Data struct {
@@ -90,8 +90,46 @@ func getData(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, data)
 }
 
+func updateDatabase(ping Ping) {
+	println(ping.Loss, ping.ResponseTime)
+
+	username := getEnv("USERNAME")
+	password := getEnv("PASSWORD")
+
+	serverAPIOptions := options.ServerAPI(options.ServerAPIVersion1)
+	clientOptions := options.Client().
+		ApplyURI("mongodb+srv://" + username + ":" + password + "@main.pvnry.mongodb.net/?retryWrites=true&w=majority").
+		SetServerAPIOptions(serverAPIOptions)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	client, err := mongo.Connect(ctx, clientOptions)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	collection := client.Database("Connectivity").Collection("Pings")
+
+	// Add ping to database
+	opts := options.Update().SetUpsert(true)
+	filter := bson.D{{"name", "pldashboard.com"}}
+	update := bson.D{{"$push", bson.D{{"pings", ping}}}}
+	result, err := collection.UpdateOne(context.TODO(), filter, update, opts)
+	if err != nil {
+		panic(err)
+	}
+	print(result)
+
+	// Remove oldest ping (if more than 150 pings collected)
+	filter = bson.D{{"name", "pldashboard.com"}, {"pings", bson.D{{"$gt", bson.D{{"$size", 150}}}}}}
+	update = bson.D{{"$pop", bson.D{{"pings", -1}}}}
+	result, err = collection.UpdateOne(context.TODO(), filter, update, opts)
+	if err != nil {
+		panic(err)
+	}
+}
+
 func checkConnectivity() {
-	pinger, err := ping.NewPinger("www.pldashboard.com")
+	pinger, err := ping.NewPinger("pldashboard.com")
 	if err != nil {
 		panic(err)
 	}
@@ -110,6 +148,8 @@ func checkConnectivity() {
 		fmt.Printf("round-trip min/avg/max/stddev = %v/%v/%v/%v\n",
 			stats.MinRtt, stats.AvgRtt, stats.MaxRtt, stats.StdDevRtt)
 		// loss := stats.PacketLoss
+		ping := Ping{Loss: stats.PacketLoss, ResponseTime: int64(stats.AvgRtt)}
+		updateDatabase(ping)
 
 	}
 
