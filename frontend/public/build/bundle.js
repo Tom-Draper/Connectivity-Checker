@@ -625,27 +625,27 @@ var app = (function () {
     			div6 = element("div");
     			create_component(graph.$$.fragment);
     			attr_dev(div0, "class", "last-updated svelte-zrz23a");
-    			add_location(div0, file, 78, 8, 2414);
+    			add_location(div0, file, 78, 8, 2427);
     			attr_dev(div1, "class", "header svelte-zrz23a");
-    			add_location(div1, file, 70, 6, 2094);
+    			add_location(div1, file, 70, 6, 2107);
     			attr_dev(h4, "class", "name svelte-zrz23a");
-    			add_location(h4, file, 81, 8, 2515);
+    			add_location(h4, file, 81, 8, 2528);
     			attr_dev(img, "class", "tick svelte-zrz23a");
     			if (!src_url_equal(img.src, img_src_value = "./img/tick.png")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "");
-    			add_location(img, file, 83, 8, 2584);
+    			add_location(img, file, 83, 8, 2597);
     			attr_dev(div2, "class", "uptime-text");
-    			add_location(div2, file, 84, 8, 2641);
+    			add_location(div2, file, 84, 8, 2654);
     			attr_dev(div3, "class", "uptime svelte-zrz23a");
-    			add_location(div3, file, 82, 6, 2555);
+    			add_location(div3, file, 82, 6, 2568);
     			attr_dev(div4, "class", "pings svelte-zrz23a");
-    			add_location(div4, file, 88, 6, 2734);
+    			add_location(div4, file, 88, 6, 2747);
     			attr_dev(div5, "class", "last-hours svelte-zrz23a");
-    			add_location(div5, file, 99, 6, 3048);
+    			add_location(div5, file, 99, 6, 3061);
     			attr_dev(div6, "class", "ping-graph svelte-zrz23a");
-    			add_location(div6, file, 100, 6, 3099);
+    			add_location(div6, file, 100, 6, 3112);
     			attr_dev(div7, "class", "pings-container svelte-zrz23a");
-    			add_location(div7, file, 80, 6, 2477);
+    			add_location(div7, file, 80, 6, 2490);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -768,9 +768,9 @@ var app = (function () {
     			attr_dev(img, "class", "big-cross svelte-zrz23a");
     			if (!src_url_equal(img.src, img_src_value = "./img/cross.webp")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "");
-    			add_location(img, file, 75, 10, 2289);
+    			add_location(img, file, 75, 10, 2302);
     			attr_dev(h2, "class", "status svelte-zrz23a");
-    			add_location(h2, file, 76, 10, 2355);
+    			add_location(h2, file, 76, 10, 2368);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, img, anchor);
@@ -811,9 +811,9 @@ var app = (function () {
     			attr_dev(img, "class", "big-tick svelte-zrz23a");
     			if (!src_url_equal(img.src, img_src_value = "./img/bigtick.png")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "");
-    			add_location(img, file, 72, 10, 2149);
+    			add_location(img, file, 72, 10, 2162);
     			attr_dev(h2, "class", "status svelte-zrz23a");
-    			add_location(h2, file, 73, 10, 2215);
+    			add_location(h2, file, 73, 10, 2228);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, img, anchor);
@@ -846,7 +846,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			attr_dev(div, "class", "ping empty svelte-zrz23a");
-    			add_location(div, file, 95, 12, 2970);
+    			add_location(div, file, 95, 12, 2983);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -875,7 +875,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			attr_dev(div, "class", "ping failed svelte-zrz23a");
-    			add_location(div, file, 93, 12, 2912);
+    			add_location(div, file, 93, 12, 2925);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -904,7 +904,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			attr_dev(div, "class", "ping ok svelte-zrz23a");
-    			add_location(div, file, 91, 12, 2836);
+    			add_location(div, file, 91, 12, 2849);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -987,9 +987,9 @@ var app = (function () {
     			div = element("div");
     			if (if_block) if_block.c();
     			attr_dev(div, "class", "content svelte-zrz23a");
-    			add_location(div, file, 68, 2, 2038);
+    			add_location(div, file, 68, 2, 2051);
     			attr_dev(main, "class", "svelte-zrz23a");
-    			add_location(main, file, 67, 0, 2029);
+    			add_location(main, file, 67, 0, 2042);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1086,7 +1086,7 @@ var app = (function () {
     	let data;
 
     	onMount(async function () {
-    		const response = await fetch("http://localhost:8080/data/tomdraper.dev");
+    		const response = await fetch("http://localhost:8080/data/notion-courses.netlify.app");
     		let json = await response.json();
     		let pings = json.pings;
     		console.log(pings);
