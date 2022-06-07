@@ -2,16 +2,15 @@
   import { onMount } from "svelte";
   import Graph from "./components/Graph.svelte";
 
-  function createGraphData(pings: {loss: number, responseTime: number}[]): {x: number[], y: number[], type: string} {
-    let x: number[] = [];
+  function createGraphData(pings: {loss: number, response: number, time: string}[]): {x: number[], y: number[], type: string} {
+    let x = new Array(pings.length).fill(1).map( (_, i) => i+1);
     let y: number[] = [];
     for (let i = 0; i < pings.length; i++) {
-      if (pings[i].loss == null || pings[i].responseTime < 0) {
+      if (pings[i].loss == null || pings[i].response <= 0) {
         y.push(0);
       } else {
-        y.push(pings[i].responseTime/1000000);
+        y.push(pings[i].response/1000000);
       }
-      x.push(i + 1);
     }
     let graphData = {
       x: x,
@@ -21,10 +20,10 @@
     return graphData
   }
 
-  function calcUptime(pings: {loss: number, responseTime: number}[]) {
+  function calcUptime(pings: {loss: number, response: number}[]) {
     let upCounts = 0;
     for (let i = 0; i < pings.length; i++) {
-      if (pings[i].responseTime > 0) {
+      if (pings[i].response > 0) {
         upCounts += 1;
       }
     }
@@ -33,18 +32,21 @@
   }
 
   let graphData: {x: number[], y: number[], type: string};
-  let data: {live: boolean, name: string, time: string, uptime: string, data: {loss: number, responseTime: number}[]};
+  let data: {live: boolean, name: string, time: Date, uptime: string, pings: {loss: number, response: number, time: string}[]};
   onMount(async function () {
-    const response = await fetch("http://localhost:8080/data/pldashboard.com");
+    const response = await fetch("http://localhost:8080/data/tomdraper.dev");
     let json = await response.json();
     
-    let pings = json.Pings;
+    let pings = json.pings;
+
+    console.log(pings);
     
     let uptime = calcUptime(pings);
     
     let filler: null[][] = Array(150 - pings.length).fill({
       loss: null,
-      responseTime: null,
+      response: null,
+      time: null
     });
     pings = filler.concat(pings);  // Pad with null values to 150 vals
 
@@ -52,10 +54,10 @@
     
     data = {
       live: true,
-      name: json.Name,
-      time: new Date(Date.now()).toUTCString(),
+      name: json.name,
+      time: new Date(pings[pings.length-1].time),
       uptime: uptime,
-      data: pings,
+      pings: pings,
     };
 
     console.log(data);
@@ -96,10 +98,10 @@
         </div>
       </div>
       <div class="pings">
-        {#each data.data as ping}
-          {#if ping.responseTime > 0 }
+        {#each data.pings as ping}
+          {#if ping.response > 0 }
             <div class="ping ok" />
-          {:else if ping.responseTime == 0}
+          {:else if ping.response == 0}
             <div class="ping failed" />
           {:else}
             <div class="ping empty" />

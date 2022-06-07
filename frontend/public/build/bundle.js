@@ -541,7 +541,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (69:4) {#if data != undefined}
+    // (70:4) {#if data != undefined}
     function create_if_block(ctx) {
     	let div1;
     	let t0;
@@ -579,7 +579,7 @@ var app = (function () {
 
     	let current_block_type = select_block_type(ctx);
     	let if_block = current_block_type(ctx);
-    	let each_value = /*data*/ ctx[1].data;
+    	let each_value = /*data*/ ctx[1].pings;
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -625,27 +625,27 @@ var app = (function () {
     			div6 = element("div");
     			create_component(graph.$$.fragment);
     			attr_dev(div0, "class", "last-updated svelte-zrz23a");
-    			add_location(div0, file, 77, 8, 2355);
+    			add_location(div0, file, 78, 8, 2414);
     			attr_dev(div1, "class", "header svelte-zrz23a");
-    			add_location(div1, file, 69, 6, 2035);
+    			add_location(div1, file, 70, 6, 2094);
     			attr_dev(h4, "class", "name svelte-zrz23a");
-    			add_location(h4, file, 80, 8, 2456);
+    			add_location(h4, file, 81, 8, 2515);
     			attr_dev(img, "class", "tick svelte-zrz23a");
     			if (!src_url_equal(img.src, img_src_value = "./img/tick.png")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "");
-    			add_location(img, file, 82, 8, 2525);
+    			add_location(img, file, 83, 8, 2584);
     			attr_dev(div2, "class", "uptime-text");
-    			add_location(div2, file, 83, 8, 2582);
+    			add_location(div2, file, 84, 8, 2641);
     			attr_dev(div3, "class", "uptime svelte-zrz23a");
-    			add_location(div3, file, 81, 6, 2496);
+    			add_location(div3, file, 82, 6, 2555);
     			attr_dev(div4, "class", "pings svelte-zrz23a");
-    			add_location(div4, file, 87, 6, 2675);
+    			add_location(div4, file, 88, 6, 2734);
     			attr_dev(div5, "class", "last-hours svelte-zrz23a");
-    			add_location(div5, file, 98, 6, 2996);
+    			add_location(div5, file, 99, 6, 3048);
     			attr_dev(div6, "class", "ping-graph svelte-zrz23a");
-    			add_location(div6, file, 99, 6, 3047);
+    			add_location(div6, file, 100, 6, 3099);
     			attr_dev(div7, "class", "pings-container svelte-zrz23a");
-    			add_location(div7, file, 79, 6, 2418);
+    			add_location(div7, file, 80, 6, 2477);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -695,7 +695,7 @@ var app = (function () {
     			if ((!current || dirty & /*data*/ 2) && t7_value !== (t7_value = /*data*/ ctx[1].uptime + "")) set_data_dev(t7, t7_value);
 
     			if (dirty & /*data*/ 2) {
-    				each_value = /*data*/ ctx[1].data;
+    				each_value = /*data*/ ctx[1].pings;
     				validate_each_argument(each_value);
     				let i;
 
@@ -745,14 +745,14 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(69:4) {#if data != undefined}",
+    		source: "(70:4) {#if data != undefined}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (74:8) {:else}
+    // (75:8) {:else}
     function create_else_block_1(ctx) {
     	let img;
     	let img_src_value;
@@ -768,9 +768,9 @@ var app = (function () {
     			attr_dev(img, "class", "big-cross svelte-zrz23a");
     			if (!src_url_equal(img.src, img_src_value = "./img/cross.webp")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "");
-    			add_location(img, file, 74, 10, 2230);
+    			add_location(img, file, 75, 10, 2289);
     			attr_dev(h2, "class", "status svelte-zrz23a");
-    			add_location(h2, file, 75, 10, 2296);
+    			add_location(h2, file, 76, 10, 2355);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, img, anchor);
@@ -788,14 +788,14 @@ var app = (function () {
     		block,
     		id: create_else_block_1.name,
     		type: "else",
-    		source: "(74:8) {:else}",
+    		source: "(75:8) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (71:8) {#if data.live}
+    // (72:8) {#if data.live}
     function create_if_block_3(ctx) {
     	let img;
     	let img_src_value;
@@ -811,9 +811,9 @@ var app = (function () {
     			attr_dev(img, "class", "big-tick svelte-zrz23a");
     			if (!src_url_equal(img.src, img_src_value = "./img/bigtick.png")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "");
-    			add_location(img, file, 71, 10, 2090);
+    			add_location(img, file, 72, 10, 2149);
     			attr_dev(h2, "class", "status svelte-zrz23a");
-    			add_location(h2, file, 72, 10, 2156);
+    			add_location(h2, file, 73, 10, 2215);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, img, anchor);
@@ -831,14 +831,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3.name,
     		type: "if",
-    		source: "(71:8) {#if data.live}",
+    		source: "(72:8) {#if data.live}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (94:10) {:else}
+    // (95:10) {:else}
     function create_else_block(ctx) {
     	let div;
 
@@ -846,7 +846,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			attr_dev(div, "class", "ping empty svelte-zrz23a");
-    			add_location(div, file, 94, 12, 2918);
+    			add_location(div, file, 95, 12, 2970);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -860,14 +860,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(94:10) {:else}",
+    		source: "(95:10) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (92:43) 
+    // (93:39) 
     function create_if_block_2(ctx) {
     	let div;
 
@@ -875,7 +875,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			attr_dev(div, "class", "ping failed svelte-zrz23a");
-    			add_location(div, file, 92, 12, 2860);
+    			add_location(div, file, 93, 12, 2912);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -889,14 +889,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(92:43) ",
+    		source: "(93:39) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (90:10) {#if ping.responseTime > 0 }
+    // (91:10) {#if ping.response > 0 }
     function create_if_block_1(ctx) {
     	let div;
 
@@ -904,7 +904,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			attr_dev(div, "class", "ping ok svelte-zrz23a");
-    			add_location(div, file, 90, 12, 2780);
+    			add_location(div, file, 91, 12, 2836);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -918,20 +918,20 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(90:10) {#if ping.responseTime > 0 }",
+    		source: "(91:10) {#if ping.response > 0 }",
     		ctx
     	});
 
     	return block;
     }
 
-    // (89:8) {#each data.data as ping}
+    // (90:8) {#each data.pings as ping}
     function create_each_block(ctx) {
     	let if_block_anchor;
 
     	function select_block_type_1(ctx, dirty) {
-    		if (/*ping*/ ctx[3].responseTime > 0) return create_if_block_1;
-    		if (/*ping*/ ctx[3].responseTime == 0) return create_if_block_2;
+    		if (/*ping*/ ctx[3].response > 0) return create_if_block_1;
+    		if (/*ping*/ ctx[3].response == 0) return create_if_block_2;
     		return create_else_block;
     	}
 
@@ -968,7 +968,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(89:8) {#each data.data as ping}",
+    		source: "(90:8) {#each data.pings as ping}",
     		ctx
     	});
 
@@ -987,9 +987,9 @@ var app = (function () {
     			div = element("div");
     			if (if_block) if_block.c();
     			attr_dev(div, "class", "content svelte-zrz23a");
-    			add_location(div, file, 67, 2, 1979);
+    			add_location(div, file, 68, 2, 2038);
     			attr_dev(main, "class", "svelte-zrz23a");
-    			add_location(main, file, 66, 0, 1970);
+    			add_location(main, file, 67, 0, 2029);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1051,17 +1051,15 @@ var app = (function () {
     }
 
     function createGraphData(pings) {
-    	let x = [];
+    	let x = new Array(pings.length).fill(1).map((_, i) => i + 1);
     	let y = [];
 
     	for (let i = 0; i < pings.length; i++) {
-    		if (pings[i].loss == null || pings[i].responseTime < 0) {
+    		if (pings[i].loss == null || pings[i].response <= 0) {
     			y.push(0);
     		} else {
-    			y.push(pings[i].responseTime / 1000000);
+    			y.push(pings[i].response / 1000000);
     		}
-
-    		x.push(i + 1);
     	}
 
     	let graphData = { x, y, type: "bar" };
@@ -1072,7 +1070,7 @@ var app = (function () {
     	let upCounts = 0;
 
     	for (let i = 0; i < pings.length; i++) {
-    		if (pings[i].responseTime > 0) {
+    		if (pings[i].response > 0) {
     			upCounts += 1;
     		}
     	}
@@ -1088,20 +1086,21 @@ var app = (function () {
     	let data;
 
     	onMount(async function () {
-    		const response = await fetch("http://localhost:8080/data/pldashboard.com");
+    		const response = await fetch("http://localhost:8080/data/tomdraper.dev");
     		let json = await response.json();
-    		let pings = json.Pings;
+    		let pings = json.pings;
+    		console.log(pings);
     		let uptime = calcUptime(pings);
-    		let filler = Array(150 - pings.length).fill({ loss: null, responseTime: null });
+    		let filler = Array(150 - pings.length).fill({ loss: null, response: null, time: null });
     		pings = filler.concat(pings); // Pad with null values to 150 vals
     		$$invalidate(0, graphData = createGraphData(pings));
 
     		$$invalidate(1, data = {
     			live: true,
-    			name: json.Name,
-    			time: new Date(Date.now()).toUTCString(),
+    			name: json.name,
+    			time: new Date(pings[pings.length - 1].time),
     			uptime,
-    			data: pings
+    			pings
     		});
 
     		console.log(data);
