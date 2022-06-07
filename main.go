@@ -91,7 +91,7 @@ func getData(c *gin.Context) {
 }
 
 func checkConnectivity() {
-	pinger, err := ping.NewPinger("www.google.com")
+	pinger, err := ping.NewPinger("www.pldashboard.com")
 	if err != nil {
 		panic(err)
 	}
@@ -109,6 +109,8 @@ func checkConnectivity() {
 			stats.PacketsSent, stats.PacketsRecv, stats.PacketLoss)
 		fmt.Printf("round-trip min/avg/max/stddev = %v/%v/%v/%v\n",
 			stats.MinRtt, stats.AvgRtt, stats.MaxRtt, stats.StdDevRtt)
+		loss := stats.Pa?cketLoss
+
 	}
 
 	pinger.Run()
