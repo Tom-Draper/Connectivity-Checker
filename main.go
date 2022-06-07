@@ -28,6 +28,16 @@ type Data struct {
 	Pings []Ping `json:"pings"`
 }
 
+type Response struct {
+	Time time.Time `json:"time"`
+	Data Data      `json:"data"`
+}
+
+type AllDataResponse struct {
+	Time time.Time `json:"time"`
+	Data []Data    `json:"data"`
+}
+
 var websites = [...]string{"pldashboard.com", "tomdraper.dev", "notion-courses.netlify.app", "colour-themes.netlify.app"}
 
 func periodicallyPing() {
@@ -35,7 +45,7 @@ func periodicallyPing() {
 		print(address)
 		go testConnectivity(address)
 	}
-	for range time.Tick(time.Minute * 30) {
+	for range time.Tick(time.Minute * 60) {
 		for _, address := range websites {
 			go testConnectivity(address)
 		}
@@ -63,6 +73,7 @@ func main() {
 
 	router := gin.Default()
 	router.Use(CORSMiddleware())
+	router.GET("/data/all", getAllData)
 	router.GET("/data/:id", getData)
 
 	router.Run("localhost:8080")
@@ -90,7 +101,6 @@ func validAddress(address string) bool {
 }
 
 func fetchData(id string) Data {
-
 	print(id)
 	if !validAddress(id) {
 		return Data{}
@@ -114,7 +124,18 @@ func fetchData(id string) Data {
 func getData(c *gin.Context) {
 	id := c.Param("id")
 	data := fetchData(id)
-	c.IndentedJSON(http.StatusOK, data)
+	res := Response{time.Now(), data}
+	c.IndentedJSON(http.StatusOK, res)
+}
+
+func getAllData(c *gin.Context) {
+	var data []Data
+	for _, address := range websites {
+		print(address)
+		data = append(data, fetchData(address))
+	}
+	res := AllDataResponse{time.Now(), data}
+	c.IndentedJSON(http.StatusOK, res)
 }
 
 func connectToDatabase() *mongo.Collection {
