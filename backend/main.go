@@ -35,9 +35,9 @@ type Data struct {
 }
 
 func main() {
+	go checkConnectivity()
 	router := gin.Default()
 	router.GET("/data/:id", getData)
-	router.GET("/check", checkConnectivity)
 
 	router.Run("localhost:8080")
 }
@@ -90,16 +90,26 @@ func getData(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, data)
 }
 
-func checkConnectivity(c *gin.Context) {
+func checkConnectivity() {
 	pinger, err := ping.NewPinger("www.google.com")
 	if err != nil {
 		panic(err)
 	}
 	pinger.Count = 3
-	err = pinger.Run() // Blocks until finished.
-	if err != nil {
-		panic(err)
+	pinger.Timeout = time.Second * 3
+	pinger.SetPrivileged(true)
+
+	pinger.OnRecv = func(pkt *ping.Packet) {
+		fmt.Printf("%d bytes from %s: icmp_seq=%d time=%v\n",
+			pkt.Nbytes, pkt.IPAddr, pkt.Seq, pkt.Rtt)
 	}
-	stats := pinger.Statistics() // get send/receive/duplicate/rtt stats
-	print(stats)
+	pinger.OnFinish = func(stats *ping.Statistics) {
+		fmt.Printf("\n--- %s ping statistics ---\n", stats.Addr)
+		fmt.Printf("%d packets transmitted, %d packets received, %v%% packet loss\n",
+			stats.PacketsSent, stats.PacketsRecv, stats.PacketLoss)
+		fmt.Printf("round-trip min/avg/max/stddev = %v/%v/%v/%v\n",
+			stats.MinRtt, stats.AvgRtt, stats.MaxRtt, stats.StdDevRtt)
+	}
+
+	pinger.Run()
 }
