@@ -22,7 +22,7 @@ type Ping struct {
 	ResponseTime int64   `json:"responseTime"`
 }
 
-type Record struct {
+type Data struct {
 	Name  string
 	Pings []Ping
 }
