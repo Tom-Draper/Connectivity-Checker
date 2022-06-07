@@ -109,7 +109,7 @@ func checkConnectivity() {
 			stats.PacketsSent, stats.PacketsRecv, stats.PacketLoss)
 		fmt.Printf("round-trip min/avg/max/stddev = %v/%v/%v/%v\n",
 			stats.MinRtt, stats.AvgRtt, stats.MaxRtt, stats.StdDevRtt)
-		loss := stats.Pa?cketLoss
+		// loss := stats.PacketLoss
 
 	}
 
