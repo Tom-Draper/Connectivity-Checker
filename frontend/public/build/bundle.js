@@ -537,11 +537,11 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[2] = list[i];
+    	child_ctx[3] = list[i];
     	return child_ctx;
     }
 
-    // (80:4) {#if data != undefined}
+    // (69:4) {#if data != undefined}
     function create_if_block(ctx) {
     	let div1;
     	let t0;
@@ -549,7 +549,7 @@ var app = (function () {
     	let t1_value = /*data*/ ctx[1].time + "";
     	let t1;
     	let t2;
-    	let div6;
+    	let div7;
     	let h4;
     	let t3_value = /*data*/ ctx[1].name + "";
     	let t3;
@@ -564,31 +564,43 @@ var app = (function () {
     	let t7;
     	let t8;
     	let t9;
-    	let t10;
     	let div4;
-    	let t12;
+    	let t10;
     	let div5;
+    	let t12;
+    	let div6;
+    	let graph;
     	let current;
 
     	function select_block_type(ctx, dirty) {
-    		if (/*data*/ ctx[1].live) return create_if_block_5;
+    		if (/*data*/ ctx[1].live) return create_if_block_3;
     		return create_else_block_1;
     	}
 
     	let current_block_type = select_block_type(ctx);
-    	let if_block0 = current_block_type(ctx);
-    	let if_block1 = /*data*/ ctx[1] != undefined && create_if_block_2(ctx);
-    	let if_block2 = /*graphData*/ ctx[0] != undefined && create_if_block_1(ctx);
+    	let if_block = current_block_type(ctx);
+    	let each_value = /*data*/ ctx[1].data;
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+    	}
+
+    	graph = new Graph({
+    			props: { graphData: /*graphData*/ ctx[0] },
+    			$$inline: true
+    		});
 
     	const block = {
     		c: function create() {
     			div1 = element("div");
-    			if_block0.c();
+    			if_block.c();
     			t0 = space();
     			div0 = element("div");
     			t1 = text(t1_value);
     			t2 = space();
-    			div6 = element("div");
+    			div7 = element("div");
     			h4 = element("h4");
     			t3 = text(t3_value);
     			t4 = space();
@@ -600,69 +612,81 @@ var app = (function () {
     			t7 = text(t7_value);
     			t8 = text("%");
     			t9 = space();
-    			if (if_block1) if_block1.c();
-    			t10 = space();
     			div4 = element("div");
-    			div4.textContent = "Last 150 hours";
-    			t12 = space();
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			t10 = space();
     			div5 = element("div");
-    			if (if_block2) if_block2.c();
-    			attr_dev(div0, "class", "last-updated svelte-ljxrhx");
-    			add_location(div0, file, 88, 8, 2895);
-    			attr_dev(div1, "class", "header svelte-ljxrhx");
-    			add_location(div1, file, 80, 6, 2575);
-    			attr_dev(h4, "class", "name svelte-ljxrhx");
-    			add_location(h4, file, 91, 8, 2996);
-    			attr_dev(img, "class", "tick svelte-ljxrhx");
+    			div5.textContent = "Last 150 hours";
+    			t12 = space();
+    			div6 = element("div");
+    			create_component(graph.$$.fragment);
+    			attr_dev(div0, "class", "last-updated svelte-zrz23a");
+    			add_location(div0, file, 77, 8, 2355);
+    			attr_dev(div1, "class", "header svelte-zrz23a");
+    			add_location(div1, file, 69, 6, 2035);
+    			attr_dev(h4, "class", "name svelte-zrz23a");
+    			add_location(h4, file, 80, 8, 2456);
+    			attr_dev(img, "class", "tick svelte-zrz23a");
     			if (!src_url_equal(img.src, img_src_value = "./img/tick.png")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "");
-    			add_location(img, file, 93, 8, 3065);
+    			add_location(img, file, 82, 8, 2525);
     			attr_dev(div2, "class", "uptime-text");
-    			add_location(div2, file, 94, 8, 3122);
-    			attr_dev(div3, "class", "uptime svelte-ljxrhx");
-    			add_location(div3, file, 92, 6, 3036);
-    			attr_dev(div4, "class", "last-hours svelte-ljxrhx");
-    			add_location(div4, file, 111, 6, 3578);
-    			attr_dev(div5, "class", "ping-graph svelte-ljxrhx");
-    			add_location(div5, file, 112, 6, 3629);
-    			attr_dev(div6, "class", "pings-container svelte-ljxrhx");
-    			add_location(div6, file, 90, 6, 2958);
+    			add_location(div2, file, 83, 8, 2582);
+    			attr_dev(div3, "class", "uptime svelte-zrz23a");
+    			add_location(div3, file, 81, 6, 2496);
+    			attr_dev(div4, "class", "pings svelte-zrz23a");
+    			add_location(div4, file, 87, 6, 2675);
+    			attr_dev(div5, "class", "last-hours svelte-zrz23a");
+    			add_location(div5, file, 98, 6, 2996);
+    			attr_dev(div6, "class", "ping-graph svelte-zrz23a");
+    			add_location(div6, file, 99, 6, 3047);
+    			attr_dev(div7, "class", "pings-container svelte-zrz23a");
+    			add_location(div7, file, 79, 6, 2418);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
-    			if_block0.m(div1, null);
+    			if_block.m(div1, null);
     			append_dev(div1, t0);
     			append_dev(div1, div0);
     			append_dev(div0, t1);
     			insert_dev(target, t2, anchor);
-    			insert_dev(target, div6, anchor);
-    			append_dev(div6, h4);
+    			insert_dev(target, div7, anchor);
+    			append_dev(div7, h4);
     			append_dev(h4, t3);
-    			append_dev(div6, t4);
-    			append_dev(div6, div3);
+    			append_dev(div7, t4);
+    			append_dev(div7, div3);
     			append_dev(div3, img);
     			append_dev(div3, t5);
     			append_dev(div3, div2);
     			append_dev(div2, t6);
     			append_dev(div2, t7);
     			append_dev(div2, t8);
-    			append_dev(div6, t9);
-    			if (if_block1) if_block1.m(div6, null);
-    			append_dev(div6, t10);
-    			append_dev(div6, div4);
-    			append_dev(div6, t12);
-    			append_dev(div6, div5);
-    			if (if_block2) if_block2.m(div5, null);
+    			append_dev(div7, t9);
+    			append_dev(div7, div4);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(div4, null);
+    			}
+
+    			append_dev(div7, t10);
+    			append_dev(div7, div5);
+    			append_dev(div7, t12);
+    			append_dev(div7, div6);
+    			mount_component(graph, div6, null);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
     			if (current_block_type !== (current_block_type = select_block_type(ctx))) {
-    				if_block0.d(1);
-    				if_block0 = current_block_type(ctx);
+    				if_block.d(1);
+    				if_block = current_block_type(ctx);
 
-    				if (if_block0) {
-    					if_block0.c();
-    					if_block0.m(div1, t0);
+    				if (if_block) {
+    					if_block.c();
+    					if_block.m(div1, t0);
     				}
     			}
 
@@ -670,58 +694,50 @@ var app = (function () {
     			if ((!current || dirty & /*data*/ 2) && t3_value !== (t3_value = /*data*/ ctx[1].name + "")) set_data_dev(t3, t3_value);
     			if ((!current || dirty & /*data*/ 2) && t7_value !== (t7_value = /*data*/ ctx[1].uptime + "")) set_data_dev(t7, t7_value);
 
-    			if (/*data*/ ctx[1] != undefined) {
-    				if (if_block1) {
-    					if_block1.p(ctx, dirty);
-    				} else {
-    					if_block1 = create_if_block_2(ctx);
-    					if_block1.c();
-    					if_block1.m(div6, t10);
-    				}
-    			} else if (if_block1) {
-    				if_block1.d(1);
-    				if_block1 = null;
-    			}
+    			if (dirty & /*data*/ 2) {
+    				each_value = /*data*/ ctx[1].data;
+    				validate_each_argument(each_value);
+    				let i;
 
-    			if (/*graphData*/ ctx[0] != undefined) {
-    				if (if_block2) {
-    					if_block2.p(ctx, dirty);
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context(ctx, each_value, i);
 
-    					if (dirty & /*graphData*/ 1) {
-    						transition_in(if_block2, 1);
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(div4, null);
     					}
-    				} else {
-    					if_block2 = create_if_block_1(ctx);
-    					if_block2.c();
-    					transition_in(if_block2, 1);
-    					if_block2.m(div5, null);
     				}
-    			} else if (if_block2) {
-    				group_outros();
 
-    				transition_out(if_block2, 1, 1, () => {
-    					if_block2 = null;
-    				});
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
 
-    				check_outros();
+    				each_blocks.length = each_value.length;
     			}
+
+    			const graph_changes = {};
+    			if (dirty & /*graphData*/ 1) graph_changes.graphData = /*graphData*/ ctx[0];
+    			graph.$set(graph_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
-    			transition_in(if_block2);
+    			transition_in(graph.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
-    			transition_out(if_block2);
+    			transition_out(graph.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div1);
-    			if_block0.d();
+    			if_block.d();
     			if (detaching) detach_dev(t2);
-    			if (detaching) detach_dev(div6);
-    			if (if_block1) if_block1.d();
-    			if (if_block2) if_block2.d();
+    			if (detaching) detach_dev(div7);
+    			destroy_each(each_blocks, detaching);
+    			destroy_component(graph);
     		}
     	};
 
@@ -729,14 +745,14 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(80:4) {#if data != undefined}",
+    		source: "(69:4) {#if data != undefined}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (85:8) {:else}
+    // (74:8) {:else}
     function create_else_block_1(ctx) {
     	let img;
     	let img_src_value;
@@ -749,12 +765,12 @@ var app = (function () {
     			t0 = space();
     			h2 = element("h2");
     			h2.textContent = "Service down";
-    			attr_dev(img, "class", "big-cross svelte-ljxrhx");
+    			attr_dev(img, "class", "big-cross svelte-zrz23a");
     			if (!src_url_equal(img.src, img_src_value = "./img/cross.webp")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "");
-    			add_location(img, file, 85, 10, 2770);
-    			attr_dev(h2, "class", "status svelte-ljxrhx");
-    			add_location(h2, file, 86, 10, 2836);
+    			add_location(img, file, 74, 10, 2230);
+    			attr_dev(h2, "class", "status svelte-zrz23a");
+    			add_location(h2, file, 75, 10, 2296);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, img, anchor);
@@ -772,15 +788,15 @@ var app = (function () {
     		block,
     		id: create_else_block_1.name,
     		type: "else",
-    		source: "(85:8) {:else}",
+    		source: "(74:8) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (82:8) {#if data.live}
-    function create_if_block_5(ctx) {
+    // (71:8) {#if data.live}
+    function create_if_block_3(ctx) {
     	let img;
     	let img_src_value;
     	let t0;
@@ -792,12 +808,12 @@ var app = (function () {
     			t0 = space();
     			h2 = element("h2");
     			h2.textContent = "All services are online";
-    			attr_dev(img, "class", "big-tick svelte-ljxrhx");
+    			attr_dev(img, "class", "big-tick svelte-zrz23a");
     			if (!src_url_equal(img.src, img_src_value = "./img/bigtick.png")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "");
-    			add_location(img, file, 82, 10, 2630);
-    			attr_dev(h2, "class", "status svelte-ljxrhx");
-    			add_location(h2, file, 83, 10, 2696);
+    			add_location(img, file, 71, 10, 2090);
+    			attr_dev(h2, "class", "status svelte-zrz23a");
+    			add_location(h2, file, 72, 10, 2156);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, img, anchor);
@@ -813,95 +829,24 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_5.name,
+    		id: create_if_block_3.name,
     		type: "if",
-    		source: "(82:8) {#if data.live}",
+    		source: "(71:8) {#if data.live}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (99:6) {#if data != undefined}
-    function create_if_block_2(ctx) {
-    	let div;
-    	let each_value = /*data*/ ctx[1].data;
-    	validate_each_argument(each_value);
-    	let each_blocks = [];
-
-    	for (let i = 0; i < each_value.length; i += 1) {
-    		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
-    	}
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].c();
-    			}
-
-    			attr_dev(div, "class", "pings svelte-ljxrhx");
-    			add_location(div, file, 99, 6, 3245);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(div, null);
-    			}
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*data*/ 2) {
-    				each_value = /*data*/ ctx[1].data;
-    				validate_each_argument(each_value);
-    				let i;
-
-    				for (i = 0; i < each_value.length; i += 1) {
-    					const child_ctx = get_each_context(ctx, each_value, i);
-
-    					if (each_blocks[i]) {
-    						each_blocks[i].p(child_ctx, dirty);
-    					} else {
-    						each_blocks[i] = create_each_block(child_ctx);
-    						each_blocks[i].c();
-    						each_blocks[i].m(div, null);
-    					}
-    				}
-
-    				for (; i < each_blocks.length; i += 1) {
-    					each_blocks[i].d(1);
-    				}
-
-    				each_blocks.length = each_value.length;
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			destroy_each(each_blocks, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_2.name,
-    		type: "if",
-    		source: "(99:6) {#if data != undefined}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (106:10) {:else}
+    // (94:10) {:else}
     function create_else_block(ctx) {
     	let div;
 
     	const block = {
     		c: function create() {
     			div = element("div");
-    			attr_dev(div, "class", "ping empty svelte-ljxrhx");
-    			add_location(div, file, 106, 12, 3488);
+    			attr_dev(div, "class", "ping empty svelte-zrz23a");
+    			add_location(div, file, 94, 12, 2918);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -915,22 +860,22 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(106:10) {:else}",
+    		source: "(94:10) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (104:43) 
-    function create_if_block_4(ctx) {
+    // (92:43) 
+    function create_if_block_2(ctx) {
     	let div;
 
     	const block = {
     		c: function create() {
     			div = element("div");
-    			attr_dev(div, "class", "ping failed svelte-ljxrhx");
-    			add_location(div, file, 104, 12, 3430);
+    			attr_dev(div, "class", "ping failed svelte-zrz23a");
+    			add_location(div, file, 92, 12, 2860);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -942,24 +887,24 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_4.name,
+    		id: create_if_block_2.name,
     		type: "if",
-    		source: "(104:43) ",
+    		source: "(92:43) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (102:10) {#if ping.responseTime > 0 }
-    function create_if_block_3(ctx) {
+    // (90:10) {#if ping.responseTime > 0 }
+    function create_if_block_1(ctx) {
     	let div;
 
     	const block = {
     		c: function create() {
     			div = element("div");
-    			attr_dev(div, "class", "ping ok svelte-ljxrhx");
-    			add_location(div, file, 102, 12, 3350);
+    			attr_dev(div, "class", "ping ok svelte-zrz23a");
+    			add_location(div, file, 90, 12, 2780);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -971,22 +916,22 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_3.name,
+    		id: create_if_block_1.name,
     		type: "if",
-    		source: "(102:10) {#if ping.responseTime > 0 }",
+    		source: "(90:10) {#if ping.responseTime > 0 }",
     		ctx
     	});
 
     	return block;
     }
 
-    // (101:8) {#each data.data as ping}
+    // (89:8) {#each data.data as ping}
     function create_each_block(ctx) {
     	let if_block_anchor;
 
     	function select_block_type_1(ctx, dirty) {
-    		if (/*ping*/ ctx[2].responseTime > 0) return create_if_block_3;
-    		if (/*ping*/ ctx[2].responseTime == 0) return create_if_block_4;
+    		if (/*ping*/ ctx[3].responseTime > 0) return create_if_block_1;
+    		if (/*ping*/ ctx[3].responseTime == 0) return create_if_block_2;
     		return create_else_block;
     	}
 
@@ -1023,55 +968,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(101:8) {#each data.data as ping}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (114:8) {#if graphData != undefined}
-    function create_if_block_1(ctx) {
-    	let graph;
-    	let current;
-
-    	graph = new Graph({
-    			props: { graphData: /*graphData*/ ctx[0] },
-    			$$inline: true
-    		});
-
-    	const block = {
-    		c: function create() {
-    			create_component(graph.$$.fragment);
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(graph, target, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const graph_changes = {};
-    			if (dirty & /*graphData*/ 1) graph_changes.graphData = /*graphData*/ ctx[0];
-    			graph.$set(graph_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(graph.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(graph.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(graph, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_1.name,
-    		type: "if",
-    		source: "(114:8) {#if graphData != undefined}",
+    		source: "(89:8) {#each data.data as ping}",
     		ctx
     	});
 
@@ -1089,10 +986,10 @@ var app = (function () {
     			main = element("main");
     			div = element("div");
     			if (if_block) if_block.c();
-    			attr_dev(div, "class", "content svelte-ljxrhx");
-    			add_location(div, file, 72, 2, 2308);
-    			attr_dev(main, "class", "svelte-ljxrhx");
-    			add_location(main, file, 71, 0, 2299);
+    			attr_dev(div, "class", "content svelte-zrz23a");
+    			add_location(div, file, 67, 2, 1979);
+    			attr_dev(main, "class", "svelte-zrz23a");
+    			add_location(main, file, 66, 0, 1970);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1161,7 +1058,7 @@ var app = (function () {
     		if (pings[i].loss == null || pings[i].responseTime < 0) {
     			y.push(0);
     		} else {
-    			y.push(pings[i].responseTime);
+    			y.push(pings[i].responseTime / 1000000);
     		}
 
     		x.push(i + 1);
@@ -1171,27 +1068,32 @@ var app = (function () {
     	return graphData;
     }
 
+    function calcUptime(pings) {
+    	let upCounts = 0;
+
+    	for (let i = 0; i < pings.length; i++) {
+    		if (pings[i].responseTime > 0) {
+    			upCounts += 1;
+    		}
+    	}
+
+    	let uptime = (upCounts / pings.length * 100).toFixed(1);
+    	return uptime;
+    }
+
     function instance($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('App', slots, []);
-    	let graphData = undefined;
-    	let data = undefined;
+    	let graphData;
+    	let data;
 
     	onMount(async function () {
     		const response = await fetch("http://localhost:8080/data/pldashboard.com");
     		let json = await response.json();
     		let pings = json.Pings;
+    		let uptime = calcUptime(pings);
     		let filler = Array(150 - pings.length).fill({ loss: null, responseTime: null });
-    		let upCounts = 0;
-
-    		for (let i = 0; i < pings.length; i++) {
-    			if (pings[i].responseTime > 0) {
-    				upCounts += 1;
-    			}
-    		}
-
-    		let uptime = (upCounts / pings.length * 100).toFixed(1);
-    		pings = filler.concat(pings);
+    		pings = filler.concat(pings); // Pad with null values to 150 vals
     		$$invalidate(0, graphData = createGraphData(pings));
 
     		$$invalidate(1, data = {
@@ -1203,10 +1105,19 @@ var app = (function () {
     		});
 
     		console.log(data);
-    	}); // let darkmode = "off";
-    	// if (darkmode == "on") {
-    	//   document.documentElement.style.setProperty("--background", "#23272a");
-    	//   document.documentElement.style.setProperty("--card", "#1d2023");
+    	});
+
+    	let darkmode = "off";
+
+    	if (darkmode == "on") {
+    		document.documentElement.style.setProperty("--background", "#23272a");
+    		document.documentElement.style.setProperty("--card", "#1d2023");
+    		document.documentElement.style.setProperty("--text", "white");
+    	} else {
+    		document.documentElement.style.setProperty("--background", "white");
+    		document.documentElement.style.setProperty("--card", "white");
+    		document.documentElement.style.setProperty("--text", "black");
+    	}
 
     	const writable_props = [];
 
@@ -1218,13 +1129,16 @@ var app = (function () {
     		onMount,
     		Graph,
     		createGraphData,
+    		calcUptime,
     		graphData,
-    		data
+    		data,
+    		darkmode
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('graphData' in $$props) $$invalidate(0, graphData = $$props.graphData);
     		if ('data' in $$props) $$invalidate(1, data = $$props.data);
+    		if ('darkmode' in $$props) darkmode = $$props.darkmode;
     	};
 
     	if ($$props && "$$inject" in $$props) {

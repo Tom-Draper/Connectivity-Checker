@@ -9,7 +9,7 @@
       if (pings[i].loss == null || pings[i].responseTime < 0) {
         y.push(0);
       } else {
-        y.push(pings[i].responseTime);
+        y.push(pings[i].responseTime/1000000);
       }
       x.push(i + 1);
     }
@@ -95,7 +95,6 @@
           Uptime: {data.uptime}%
         </div>
       </div>
-      {#if data != undefined}
       <div class="pings">
         {#each data.data as ping}
           {#if ping.responseTime > 0 }
@@ -107,12 +106,9 @@
           {/if}
         {/each}
       </div>
-      {/if}
       <div class="last-hours">Last 150 hours</div>
       <div class="ping-graph">
-        {#if graphData != undefined}
         <Graph {graphData} />
-        {/if}
       </div>
     </div>
     {/if}
@@ -149,7 +145,7 @@
     margin: 0 auto;
     padding: 50px 0;
     .header {
-      padding: 80px 0 100px;
+      padding: 90px 0 90px;
       .big-cross,
       .big-tick {
         width: 130px;
