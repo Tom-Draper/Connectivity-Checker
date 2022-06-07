@@ -28,7 +28,7 @@ type Data struct {
 	Pings []Ping `json:"pings"`
 }
 
-var websites = [...]string{"pldashboard.com", "tomdraper.dev"}
+var websites = [...]string{"pldashboard.com", "tomdraper.dev", "notion-courses.netlify.app", "colour-themes.netlify.app"}
 
 func periodicallyPing() {
 	for _, address := range websites {
@@ -90,12 +90,13 @@ func validAddress(address string) bool {
 }
 
 func fetchData(id string) Data {
-	var data Data
 
+	print(id)
 	if !validAddress(id) {
-		return data
+		return Data{}
 	}
 
+	var data Data
 	collection := connectToDatabase()
 
 	filter := bson.D{{"name", id}}
