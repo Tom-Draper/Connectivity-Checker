@@ -2,9 +2,10 @@
   import { onMount } from "svelte";
   export let graphData: { x: number[], y: number[], type: string };
 
+  let plotDiv;
+
   onMount(() => {
     console.log(graphData);
-    let plotDiv = document.getElementById("plotDiv");
     let Plot = new Plotly.newPlot(
       plotDiv,
       [graphData],
@@ -22,5 +23,5 @@
 </script>
 
 <div id="plotly">
-  <div id="plotDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
+  <div id="plotDiv" bind:this={plotDiv}><!-- Plotly chart will be drawn inside this DIV --></div>
 </div>

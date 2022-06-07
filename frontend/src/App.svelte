@@ -1,26 +1,17 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import Graph from "./components/Graph.svelte";
+  import Card from "./components/Card.svelte";
 
-  function createGraphData(pings: {loss: number, response: number, time: string}[]): {x: number[], y: number[], type: string} {
-    let x = new Array(pings.length).fill(1).map( (_, i) => i+1);
-    let y: number[] = [];
-    for (let i = 0; i < pings.length; i++) {
-      if (pings[i].loss == null || pings[i].response <= 0) {
-        y.push(0);
-      } else {
-        y.push(pings[i].response/1000000);
-      }
+  function allServicesOnline() {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].response <= 0) {
+        return false;
+      } 
     }
-    let graphData = {
-      x: x,
-      y: y,
-      type: "bar",
-    };
-    return graphData
+    return true;
   }
 
-  function calcUptime(pings: {loss: number, response: number}[]) {
+  function calcUptime(pings: { loss: number; response: number }[]) {
     let upCounts = 0;
     for (let i = 0; i < pings.length; i++) {
       if (pings[i].response > 0) {
@@ -31,39 +22,44 @@
     return uptime;
   }
 
-  let graphData: {x: number[], y: number[], type: string};
-  let data: {live: boolean, name: string, time: Date, uptime: string, pings: {loss: number, response: number, time: string}[]};
-  onMount(async function () {
-    const response = await fetch("https://connectivity-checker.herokuapp.com/data/pldashboard.com");
-    let json = await response.json();
-    
-    let pings = json.pings;
+  $: data = [null, null, null, null];
 
+  async function fetchPingData(address: string, index: number) {
+    const response = await fetch(address);
+    let json = await response.json();
+  
+    let pings = json.pings;
+  
     console.log(pings);
     
     let uptime = calcUptime(pings);
-    
+
+    let live = pings[pings.length-1].response > 0;
+  
     let filler: null[][] = Array(150 - pings.length).fill({
       loss: null,
       response: null,
-      time: null
+      time: null,
     });
-    pings = filler.concat(pings);  // Pad with null values to 150 vals
-
-    graphData = createGraphData(pings)
+    pings = filler.concat(pings); // Pad with null values to 150 vals
     
-    data = {
-      live: true,
+    data[index] = {
+      live: live,
       name: json.name,
-      time: new Date(pings[pings.length-1].time),
+      time: new Date(pings[pings.length - 1].time),
       uptime: uptime,
       pings: pings,
     };
-
     console.log(data);
-
-  });
+  }
   
+  onMount(async function () {
+    fetchPingData("https://connectivity-checker.herokuapp.com/data/pldashboard.com", 0)
+    fetchPingData("https://connectivity-checker.herokuapp.com/data/tomdraper.dev", 1)
+    fetchPingData("https://connectivity-checker.herokuapp.com/data/notion-courses.netlify.app", 2)
+    fetchPingData("https://connectivity-checker.herokuapp.com/data/colour-themes.netlify.app", 3)
+  });
+
   let darkmode = "off";
   if (darkmode == "on") {
     document.documentElement.style.setProperty("--background", "#23272a");
@@ -78,41 +74,29 @@
 
 <main>
   <div class="content">
-    {#if data != undefined}
+    {#if !data.includes(null)}
       <div class="header">
-        {#if data.live}
-          <img class="big-tick" src="./img/bigtick.png" alt="" />
-          <h2 class="status">All services are online</h2>
+        {#if !allServicesOnline()}
+        <img class="big-cross" src="./img/cross.webp" alt="" />
+        <h2 class="status">Service down</h2>
         {:else}
-          <img class="big-cross" src="./img/cross.webp" alt="" />
-          <h2 class="status">Service down</h2>
+        <img class="big-tick" src="./img/bigtick.png" alt="" />
+        <h2 class="status">All services are online</h2>
         {/if}
-        <div class="last-updated">{data.time}</div>
+        <div class="last-updated">{data[3].time}</div>
       </div>
-      <div class="pings-container">
-        <h4 class="name">{data.name}</h4>
-      <div class="uptime">
-        <img class="tick" src="./img/tick.png" alt="" />
-        <div class="uptime-text">
-          Uptime: {data.uptime}%
-        </div>
+      <div class="card">
+        <Card data={data[0]} />
       </div>
-      <div class="pings">
-        {#each data.pings as ping}
-          {#if ping.response > 0 }
-            <div class="ping ok" />
-          {:else if ping.response == 0}
-            <div class="ping failed" />
-          {:else}
-            <div class="ping empty" />
-          {/if}
-        {/each}
+      <div class="card">
+        <Card data={data[1]} />
       </div>
-      <div class="last-hours">Last 150 hours</div>
-      <div class="ping-graph">
-        <Graph {graphData} />
+      <div class="card">
+        <Card data={data[2]} />
       </div>
-    </div>
+      <div class="card">
+        <Card data={data[3]} />
+      </div>
     {/if}
   </div>
 </main>
@@ -160,55 +144,8 @@
         margin-bottom: 0.6rem;
       }
     }
-    .pings-container {
-      padding: 2.4rem 5rem 2rem;
-      border-radius: 5px;
-      background: var(--card);
-      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-      .name {
-        width: fit-content;
-        margin: 0 0 1.5rem 0;
-        font-size: 1em;
-      }
-      .uptime {
-        margin-bottom: 5px;
-        font-size: 0.9em;
-        display: flex;
-        .tick {
-          width: 20px;
-          height: 20px;
-          margin-right: 6px;
-        }
-      }
-      .last-hours {
-        text-align: left;
-        font-size: 0.8em;
-        margin-top: auto;
-        color: var(--secondary-text);
-        margin: 4px 0 20px 0;
-      }
-      .pings {
-        display: flex;
-        .ping {
-          width: 4px;
-          height: 50px;
-          margin: 0 1px;
-          border-radius: 3px;
-        }
-        .ok {
-          background: rgb(76, 226, 76);
-        }
-        .failed {
-          background: rgb(240, 69, 69);
-          background: #ff6566;
-        }
-        .empty {
-          background: #e5e5e5;
-        }
-      }
-    }
-    .ping-graph {
-      margin-right: -50px;
+    .card {
+      margin-bottom: 3rem;
     }
   }
 
