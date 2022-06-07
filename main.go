@@ -18,24 +18,32 @@ import (
 )
 
 type Ping struct {
-	Loss         float64 `json:"loss"`
-	ResponseTime int64   `json:"responseTime"`
+	Loss     float64   `json:"loss"`
+	Response int64     `json:"response"`
+	Time     time.Time `json:"time"`
 }
 
 type Data struct {
-	Name  string
-	Pings []Ping
+	Name  string `json:"name"`
+	Pings []Ping `json:"pings"`
 }
+
+var websites = [...]string{"pldashboard.com", "tomdraper.dev"}
 
 func periodicallyPing() {
-	go testConnectivity("pldashboard.com")
+	for _, address := range websites {
+		print(address)
+		go testConnectivity(address)
+	}
 	for range time.Tick(time.Minute * 30) {
-		go testConnectivity("pldashboard.com")
+		for _, address := range websites {
+			go testConnectivity(address)
+		}
 	}
 }
+
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
 		c.Header("Access-Control-Allow-Origin", "*")
 		c.Header("Access-Control-Allow-Credentials", "true")
 		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
@@ -49,8 +57,10 @@ func CORSMiddleware() gin.HandlerFunc {
 		c.Next()
 	}
 }
+
 func main() {
 	go periodicallyPing()
+
 	router := gin.Default()
 	router.Use(CORSMiddleware())
 	router.GET("/data/:id", getData)
@@ -69,35 +79,33 @@ func getEnv(key string) string {
 	return val
 }
 
+func validAddress(address string) bool {
+	for _, v := range websites {
+		if v == address {
+			return true
+		}
+	}
+
+	return false
+}
+
 func fetchData(id string) Data {
-	// username := getEnv("USERNAME")
-	// password := getEnv("PASSWORD")
+	var data Data
 
-	// serverAPIOptions := options.ServerAPI(options.ServerAPIVersion1)
-	// clientOptions := options.Client().
-	// 	ApplyURI("mongodb+srv://" + username + ":" + password + "@main.pvnry.mongodb.net/?retryWrites=true&w=majority").
-	// 	SetServerAPIOptions(serverAPIOptions)
-	// ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	// defer cancel()
-	// client, err := mongo.Connect(ctx, clientOptions)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// collection := client.Database("Connectivity").Collection("Pings")
+	if !validAddress(id) {
+		return data
+	}
 
 	collection := connectToDatabase()
-	print(id)
-	var result Data
+
 	filter := bson.D{{"name", id}}
 
-	err := collection.FindOne(context.TODO(), filter).Decode(&result)
+	err := collection.FindOne(context.TODO(), filter).Decode(&data)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(result)
-	data := result
+	fmt.Println(data)
 
 	return data
 }
@@ -138,18 +146,12 @@ func updateDatabase(address string, ping Ping) {
 		panic(err)
 	}
 
-	// collection.Aggregate(context.TODO(),
-	// 	bson.D{"$project", bson.D{{"name", address}, {bson.D{{"$size", "$pings"}}}}})
-
-	// Remove oldest ping (if more than 150 pings collected)
-	pingsCount := 16
-	if pingsCount > 150 {
-		filter = bson.D{{"name", address}}
-		update = bson.D{{"$pop", bson.D{{"pings", -1}}}}
-		_, err = collection.UpdateOne(context.TODO(), filter, update, opts)
-		if err != nil {
-			panic(err)
-		}
+	// Remove oldest ping
+	filter = bson.D{{"name", address}}
+	update = bson.D{{"$pop", bson.D{{"pings", -1}}}}
+	_, err = collection.UpdateOne(context.TODO(), filter, update, opts)
+	if err != nil {
+		panic(err)
 	}
 }
 
@@ -162,18 +164,13 @@ func testConnectivity(address string) {
 	pinger.Timeout = time.Second * 3
 	pinger.SetPrivileged(true)
 
-	// pinger.OnRecv = func(pkt *ping.Packet) {
-	// 	fmt.Printf("%d bytes from %s: icmp_seq=%d time=%v\n",
-	// 		pkt.Nbytes, pkt.IPAddr, pkt.Seq, pkt.Rtt)
-	// }
 	pinger.OnFinish = func(stats *ping.Statistics) {
 		fmt.Printf("\n--- %s ping statistics ---\n", stats.Addr)
 		fmt.Printf("%d packets transmitted, %d packets received, %v%% packet loss\n",
 			stats.PacketsSent, stats.PacketsRecv, stats.PacketLoss)
 		fmt.Printf("round-trip min/avg/max/stddev = %v/%v/%v/%v\n",
 			stats.MinRtt, stats.AvgRtt, stats.MaxRtt, stats.StdDevRtt)
-		// loss := stats.PacketLoss
-		ping := Ping{Loss: stats.PacketLoss, ResponseTime: int64(stats.AvgRtt)}
+		ping := Ping{Loss: stats.PacketLoss, Response: int64(stats.AvgRtt), Time: time.Now()}
 		updateDatabase(address, ping)
 
 	}
