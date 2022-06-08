@@ -5,7 +5,6 @@
   export let data: {
     live: boolean;
     name: string;
-    time: Date;
     uptime: string;
     pings: { loss: number; response: number; time: string }[];
   };
