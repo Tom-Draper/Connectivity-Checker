@@ -75,7 +75,8 @@ func main() {
 	router.GET("/data", getAllData)
 	router.GET("/data/:id", getData)
 
-	router.Run("localhost:8080")
+	port := os.Getenv("PORT")
+	router.Run(":" + port)
 }
 
 func getEnv(key string) string {
