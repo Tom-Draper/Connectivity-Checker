@@ -55,7 +55,7 @@
     }[];
   } = undefined;
   onMount(async function () {
-    fetchPingData("http://localhost:8080/data");
+    fetchPingData("https://connectivity-checker.herokuapp.com/data");
   });
 
   let darkmode = "off";
