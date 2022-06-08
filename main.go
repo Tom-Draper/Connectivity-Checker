@@ -42,10 +42,9 @@ var websites = [...]string{"pldashboard.com", "tomdraper.dev", "notion-courses.n
 
 func periodicallyPing() {
 	for _, address := range websites {
-		print(address)
 		go testConnectivity(address)
 	}
-	for range time.Tick(time.Minute * 60) {
+	for range time.Tick(time.Minute * 1) {
 		for _, address := range websites {
 			go testConnectivity(address)
 		}
@@ -73,7 +72,7 @@ func main() {
 
 	router := gin.Default()
 	router.Use(CORSMiddleware())
-	router.GET("/data/all", getAllData)
+	router.GET("/data", getAllData)
 	router.GET("/data/:id", getData)
 
 	router.Run("localhost:8080")
@@ -101,7 +100,6 @@ func validAddress(address string) bool {
 }
 
 func fetchData(id string) Data {
-	print(id)
 	if !validAddress(id) {
 		return Data{}
 	}
@@ -121,6 +119,30 @@ func fetchData(id string) Data {
 	return data
 }
 
+func fetchAllData() []Data {
+	var data []Data
+	collection := connectToDatabase()
+
+	cur, err := collection.Find(context.TODO(), bson.D{})
+	if err != nil {
+		panic(err)
+	}
+
+	for cur.Next(context.TODO()) {
+		//Create a value into which the single document can be decoded
+		var elem Data
+		err := cur.Decode(&elem)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		data = append(data, elem)
+	}
+
+	return data
+
+}
+
 func getData(c *gin.Context) {
 	id := c.Param("id")
 	data := fetchData(id)
@@ -129,11 +151,7 @@ func getData(c *gin.Context) {
 }
 
 func getAllData(c *gin.Context) {
-	var data []Data
-	for _, address := range websites {
-		print(address)
-		data = append(data, fetchData(address))
-	}
+	data := fetchAllData()
 	res := AllDataResponse{time.Now(), data}
 	c.IndentedJSON(http.StatusOK, res)
 }
