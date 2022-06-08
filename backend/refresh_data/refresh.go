@@ -1,47 +1,14 @@
 package main
 
 import (
-	"context"
 	"fmt"
-	"log"
-	"os"
+	"sync"
 	"time"
 
-	"github.com/joho/godotenv"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"refresh/lib/database"
 
 	"github.com/go-ping/ping"
 )
-
-type Ping struct {
-	Loss     float64   `json:"loss"`
-	Response int64     `json:"response"`
-	Time     time.Time `json:"time"`
-}
-
-var websites = [...]string{"pldashboard.com", "tomdraper.dev", "notion-courses.netlify.app", "colour-themes.netlify.app"}
-
-func updateDatabase(address string, ping Ping) {
-	collection := connectToDatabase()
-	// Add ping to database
-	opts := options.Update().SetUpsert(true)
-	filter := bson.D{{"name", address}}
-	update := bson.D{{"$push", bson.D{{"pings", ping}}}}
-	_, err := collection.UpdateOne(context.TODO(), filter, update, opts)
-	if err != nil {
-		panic(err)
-	}
-
-	// Remove oldest ping
-	filter = bson.D{{"name", address}}
-	update = bson.D{{"$pop", bson.D{{"pings", -1}}}}
-	_, err = collection.UpdateOne(context.TODO(), filter, update, opts)
-	if err != nil {
-		panic(err)
-	}
-}
 
 func testConnectivity(address string) {
 	pinger, err := ping.NewPinger(address)
@@ -58,8 +25,8 @@ func testConnectivity(address string) {
 			stats.PacketsSent, stats.PacketsRecv, stats.PacketLoss)
 		fmt.Printf("round-trip min/avg/max/stddev = %v/%v/%v/%v\n",
 			stats.MinRtt, stats.AvgRtt, stats.MaxRtt, stats.StdDevRtt)
-		ping := Ping{Loss: stats.PacketLoss, Response: int64(stats.AvgRtt), Time: time.Now()}
-		updateDatabase(address, ping)
+		ping := database.Ping{Loss: stats.PacketLoss, Response: int64(stats.AvgRtt), Time: time.Now()}
+		database.UpdateDatabase(address, ping)
 
 	}
 
@@ -67,7 +34,13 @@ func testConnectivity(address string) {
 }
 
 func main() {
-	for _, address := range websites {
-		testConnectivity(address)
+	var wg sync.WaitGroup
+	for _, address := range database.Websites {
+		wg.Add(1)
+		go func(address string) {
+			defer wg.Done()
+			testConnectivity(address)
+		}(address)
 	}
+	wg.Wait()
 }
