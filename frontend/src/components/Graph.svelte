@@ -3,9 +3,7 @@
   export let graphData: { x: number[], y: number[], type: string };
 
   let plotDiv;
-
   onMount(() => {
-    console.log(graphData);
     let Plot = new Plotly.newPlot(
       plotDiv,
       [graphData],

@@ -33,7 +33,6 @@
 
   onMount(async function () {
     graphData = createGraphData(data.pings);
-    console.log(graphData);
   });
 </script>
 
@@ -42,7 +41,9 @@
     <div class="pings-container">
       <h4 class="name">{data.name}</h4>
       <div class="uptime">
-        <img class="tick" src="./img/tick.png" alt="" />
+        {#if data.live}
+          <img class="tick" src="./img/tick.png" alt="" />
+        {/if}
         <div class="uptime-text">
           Uptime: {data.uptime}%
         </div>

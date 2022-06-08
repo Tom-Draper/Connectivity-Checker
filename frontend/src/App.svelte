@@ -3,10 +3,13 @@
   import Card from "./components/Card.svelte";
 
   function allServicesOnline() {
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].response <= 0) {
+    if (data == undefined) {
+      return false;
+    }
+    for (let i = 0; i < data.data.length; i++) {
+      if (data.data[i].pings[data.data[i].pings.length-1].response <= 0) {
         return false;
-      } 
+      }
     }
     return true;
   }
@@ -22,42 +25,37 @@
     return uptime;
   }
 
-  $: data = [null, null, null, null];
-
-  async function fetchPingData(address: string, index: number) {
+  async function fetchPingData(address: string) {
     const response = await fetch(address);
     let json = await response.json();
-  
-    let pings = json.pings;
-  
-    console.log(pings);
-    
-    let uptime = calcUptime(pings);
 
-    let live = pings[pings.length-1].response > 0;
-  
-    let filler: null[][] = Array(150 - pings.length).fill({
-      loss: null,
-      response: null,
-      time: null,
-    });
-    pings = filler.concat(pings); // Pad with null values to 150 vals
-    
-    data[index] = {
-      live: live,
-      name: json.name,
-      time: new Date(pings[pings.length - 1].time),
-      uptime: uptime,
-      pings: pings,
-    };
-    console.log(data);
+    // Insert computed values for each website
+    for (let i = 0; i < json.data.length; i++) {
+      let pings = json.data[i].pings;
+      json.data[i].uptime = calcUptime(pings);
+      json.data[i].live = pings[pings.length - 1].response > 0;
+      let filler: null[][] = Array(150 - pings.length).fill({
+        loss: null,
+        response: null,
+        time: null,
+      });
+      json.data[i].pings = filler.concat(pings); // Pad with null values to 150 vals
+    }
+    json.time = new Date(json.time);
+    data = json;
   }
-  
+
+  let data: undefined|{
+    time: Date;
+    data: {
+      name: string;
+      pings: { loss: number; response: number; time: string }[];
+      live: boolean;
+      uptime: string;
+    }[];
+  } = undefined;
   onMount(async function () {
-    fetchPingData("https://connectivity-checker.herokuapp.com/data/pldashboard.com", 0)
-    fetchPingData("https://connectivity-checker.herokuapp.com/data/tomdraper.dev", 1)
-    fetchPingData("https://connectivity-checker.herokuapp.com/data/notion-courses.netlify.app", 2)
-    fetchPingData("https://connectivity-checker.herokuapp.com/data/colour-themes.netlify.app", 3)
+    fetchPingData("http://localhost:8080/data");
   });
 
   let darkmode = "off";
@@ -74,28 +72,28 @@
 
 <main>
   <div class="content">
-    {#if !data.includes(null)}
+    {#if data != undefined}
       <div class="header">
         {#if !allServicesOnline()}
-        <img class="big-cross" src="./img/cross.webp" alt="" />
-        <h2 class="status">Service down</h2>
+          <img class="big-cross" src="./img/cross.webp" alt="" />
+          <h2 class="status">Service down</h2>
         {:else}
-        <img class="big-tick" src="./img/bigtick.png" alt="" />
-        <h2 class="status">All services are online</h2>
+          <img class="big-tick" src="./img/bigtick.png" alt="" />
+          <h2 class="status">All services are online</h2>
         {/if}
-        <div class="last-updated">{data[3].time}</div>
+        <div class="last-updated">{data.time}</div>
       </div>
       <div class="card">
-        <Card data={data[0]} />
+        <Card data={data.data[0]} />
       </div>
       <div class="card">
-        <Card data={data[1]} />
+        <Card data={data.data[1]} />
       </div>
       <div class="card">
-        <Card data={data[2]} />
+        <Card data={data.data[2]} />
       </div>
       <div class="card">
-        <Card data={data[3]} />
+        <Card data={data.data[3]} />
       </div>
     {/if}
   </div>
