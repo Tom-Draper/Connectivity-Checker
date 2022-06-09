@@ -33,7 +33,7 @@ func testConnectivity(address string) {
 	pinger.Run()
 }
 
-func main() {
+func runSingle() {
 	var wg sync.WaitGroup
 	for _, address := range database.Websites {
 		wg.Add(1)
@@ -43,4 +43,19 @@ func main() {
 		}(address)
 	}
 	wg.Wait()
+}
+
+func runContinuous() {
+	for _, address := range database.Websites {
+		go testConnectivity(address)
+	}
+	for range time.Tick(time.Minute * 60) {
+		for _, address := range database.Websites {
+			go testConnectivity(address)
+		}
+	}
+}
+
+func main() {
+	runSingle()
 }
