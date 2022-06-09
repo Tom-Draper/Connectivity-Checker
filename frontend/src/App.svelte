@@ -25,7 +25,7 @@
     return uptime;
   }
 
-  async function fetchPingData(address: string) {
+  async function fetchData(address: string) {
     const response = await fetch(address);
     let json = await response.json();
 
@@ -55,7 +55,7 @@
     }[];
   } = undefined;
   onMount(async function () {
-    fetchPingData("https://connectivity-checker.herokuapp.com/data");
+    fetchData("https://connectivity-checker.herokuapp.com/data");
   });
 
   let darkmode = "off";
