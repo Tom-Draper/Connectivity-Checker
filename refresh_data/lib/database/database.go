@@ -2,12 +2,11 @@ package database
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 	"time"
 
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -27,71 +26,18 @@ type Data struct {
 var Websites = [...]string{"pldashboard.com", "tomdraper.dev", "notion-courses.netlify.app", "colour-themes.netlify.app"}
 
 func getEnv(key string) string {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatalf("Some error occured. Err: %s", err)
-	}
+	// err := godotenv.Load(".env")
+	// if err != nil {
+	// 	log.Fatalf("Some error occured. Err: %s", err)
+	// }
 
 	val := os.Getenv(key)
 
 	return val
 }
 
-func validAddress(address string) bool {
-	for _, v := range Websites {
-		if v == address {
-			return true
-		}
-	}
-
-	return false
-}
-
-func FetchData(id string) Data {
-	if !validAddress(id) {
-		return Data{}
-	}
-
-	var data Data
-	collection := ConnectToDatabase()
-
-	filter := bson.D{{"name", id}}
-
-	err := collection.FindOne(context.TODO(), filter).Decode(&data)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println(data)
-
-	return data
-}
-
-func FetchAllData() []Data {
-	var data []Data
-	collection := ConnectToDatabase()
-
-	cur, err := collection.Find(context.TODO(), bson.D{})
-	if err != nil {
-		panic(err)
-	}
-
-	for cur.Next(context.TODO()) {
-		//Create a value into which the single document can be decoded
-		var elem Data
-		err := cur.Decode(&elem)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		data = append(data, elem)
-	}
-
-	return data
-}
-
-func UpdateDatabase(address string, ping Ping) {
-	collection := ConnectToDatabase()
+func UpdateDatabase(collection *mongo.Collection, address string, ping Ping) {
+	// collection := ConnectToDatabase()
 	// Add ping to database
 	opts := options.Update().SetUpsert(true)
 	filter := bson.D{{"name", address}}

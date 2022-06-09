@@ -90,26 +90,6 @@ func FetchAllData() []Data {
 	return data
 }
 
-func UpdateDatabase(address string, ping Ping) {
-	collection := ConnectToDatabase()
-	// Add ping to database
-	opts := options.Update().SetUpsert(true)
-	filter := bson.D{{"name", address}}
-	update := bson.D{{"$push", bson.D{{"pings", ping}}}}
-	_, err := collection.UpdateOne(context.TODO(), filter, update, opts)
-	if err != nil {
-		panic(err)
-	}
-
-	// Remove oldest ping
-	filter = bson.D{{"name", address}}
-	update = bson.D{{"$pop", bson.D{{"pings", -1}}}}
-	_, err = collection.UpdateOne(context.TODO(), filter, update, opts)
-	if err != nil {
-		panic(err)
-	}
-}
-
 func ConnectToDatabase() *mongo.Collection {
 	username := getEnv("USERNAME")
 	password := getEnv("PASSWORD")
