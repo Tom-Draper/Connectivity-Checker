@@ -135,6 +135,7 @@
         width: 130px;
       }
       .last-updated {
+        font-size: 0.95em;
         color: var(--secondary-text);
       }
       .status {

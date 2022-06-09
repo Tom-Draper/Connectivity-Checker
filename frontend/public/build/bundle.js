@@ -597,19 +597,19 @@ var app = (function () {
     			t9 = space();
     			div4 = element("div");
     			if (if_block1) if_block1.c();
-    			attr_dev(h4, "class", "name svelte-13hgad5");
+    			attr_dev(h4, "class", "name svelte-7wjux8");
     			add_location(h4, file$1, 30, 6, 750);
     			attr_dev(div0, "class", "uptime-text");
     			add_location(div0, file$1, 35, 8, 921);
-    			attr_dev(div1, "class", "uptime svelte-13hgad5");
+    			attr_dev(div1, "class", "uptime svelte-7wjux8");
     			add_location(div1, file$1, 31, 6, 791);
-    			attr_dev(div2, "class", "pings svelte-13hgad5");
+    			attr_dev(div2, "class", "pings svelte-7wjux8");
     			add_location(div2, file$1, 39, 6, 1018);
-    			attr_dev(div3, "class", "last-hours svelte-13hgad5");
+    			attr_dev(div3, "class", "last-hours svelte-7wjux8");
     			add_location(div3, file$1, 50, 6, 1342);
-    			attr_dev(div4, "class", "ping-graph svelte-13hgad5");
+    			attr_dev(div4, "class", "ping-graph svelte-7wjux8");
     			add_location(div4, file$1, 51, 6, 1394);
-    			attr_dev(div5, "class", "pings-container svelte-13hgad5");
+    			attr_dev(div5, "class", "pings-container svelte-7wjux8");
     			add_location(div5, file$1, 29, 4, 713);
     		},
     		m: function mount(target, anchor) {
@@ -737,7 +737,7 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			img = element("img");
-    			attr_dev(img, "class", "tick svelte-13hgad5");
+    			attr_dev(img, "class", "tick svelte-7wjux8");
     			if (!src_url_equal(img.src, img_src_value = "./img/tick.png")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "");
     			add_location(img, file$1, 33, 10, 848);
@@ -768,7 +768,7 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			div = element("div");
-    			attr_dev(div, "class", "ping empty svelte-13hgad5");
+    			attr_dev(div, "class", "ping empty svelte-7wjux8");
     			add_location(div, file$1, 46, 12, 1260);
     		},
     		m: function mount(target, anchor) {
@@ -797,7 +797,7 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			div = element("div");
-    			attr_dev(div, "class", "ping failed svelte-13hgad5");
+    			attr_dev(div, "class", "ping failed svelte-7wjux8");
     			add_location(div, file$1, 44, 12, 1200);
     		},
     		m: function mount(target, anchor) {
@@ -826,7 +826,7 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			div = element("div");
-    			attr_dev(div, "class", "ping ok svelte-13hgad5");
+    			attr_dev(div, "class", "ping ok svelte-7wjux8");
     			add_location(div, file$1, 42, 12, 1122);
     		},
     		m: function mount(target, anchor) {
@@ -1171,18 +1171,18 @@ var app = (function () {
     			t5 = space();
     			div5 = element("div");
     			create_component(card3.$$.fragment);
-    			attr_dev(div0, "class", "last-updated svelte-1pyjj5e");
-    			add_location(div0, file, 69, 8, 2338);
-    			attr_dev(div1, "class", "header svelte-1pyjj5e");
-    			add_location(div1, file, 61, 6, 2007);
-    			attr_dev(div2, "class", "card svelte-1pyjj5e");
-    			add_location(div2, file, 71, 6, 2401);
-    			attr_dev(div3, "class", "card svelte-1pyjj5e");
-    			add_location(div3, file, 74, 6, 2476);
-    			attr_dev(div4, "class", "card svelte-1pyjj5e");
-    			add_location(div4, file, 77, 6, 2551);
-    			attr_dev(div5, "class", "card svelte-1pyjj5e");
-    			add_location(div5, file, 80, 6, 2626);
+    			attr_dev(div0, "class", "last-updated svelte-1ha45ww");
+    			add_location(div0, file, 69, 8, 2364);
+    			attr_dev(div1, "class", "header svelte-1ha45ww");
+    			add_location(div1, file, 61, 6, 2025);
+    			attr_dev(div2, "class", "card svelte-1ha45ww");
+    			add_location(div2, file, 71, 6, 2429);
+    			attr_dev(div3, "class", "card svelte-1ha45ww");
+    			add_location(div3, file, 74, 6, 2507);
+    			attr_dev(div4, "class", "card svelte-1ha45ww");
+    			add_location(div4, file, 77, 6, 2585);
+    			attr_dev(div5, "class", "card svelte-1ha45ww");
+    			add_location(div5, file, 80, 6, 2663);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -1276,12 +1276,12 @@ var app = (function () {
     			t0 = space();
     			h2 = element("h2");
     			h2.textContent = "All services are online";
-    			attr_dev(img, "class", "big-tick svelte-1pyjj5e");
+    			attr_dev(img, "class", "big-tick svelte-1ha45ww");
     			if (!src_url_equal(img.src, img_src_value = "./img/bigtick.png")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "");
-    			add_location(img, file, 66, 10, 2202);
-    			attr_dev(h2, "class", "status svelte-1pyjj5e");
-    			add_location(h2, file, 67, 10, 2268);
+    			add_location(img, file, 66, 10, 2225);
+    			attr_dev(h2, "class", "status svelte-1ha45ww");
+    			add_location(h2, file, 67, 10, 2292);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, img, anchor);
@@ -1319,12 +1319,12 @@ var app = (function () {
     			t0 = space();
     			h2 = element("h2");
     			h2.textContent = "Service down";
-    			attr_dev(img, "class", "big-cross svelte-1pyjj5e");
+    			attr_dev(img, "class", "big-cross svelte-1ha45ww");
     			if (!src_url_equal(img.src, img_src_value = "./img/cross.webp")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "");
-    			add_location(img, file, 63, 10, 2073);
-    			attr_dev(h2, "class", "status svelte-1pyjj5e");
-    			add_location(h2, file, 64, 10, 2139);
+    			add_location(img, file, 63, 10, 2093);
+    			attr_dev(h2, "class", "status svelte-1ha45ww");
+    			add_location(h2, file, 64, 10, 2160);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, img, anchor);
@@ -1360,10 +1360,10 @@ var app = (function () {
     			main = element("main");
     			div = element("div");
     			if (if_block) if_block.c();
-    			attr_dev(div, "class", "content svelte-1pyjj5e");
-    			add_location(div, file, 59, 2, 1951);
-    			attr_dev(main, "class", "svelte-1pyjj5e");
-    			add_location(main, file, 58, 0, 1942);
+    			attr_dev(div, "class", "content svelte-1ha45ww");
+    			add_location(div, file, 59, 2, 1967);
+    			attr_dev(main, "class", "svelte-1ha45ww");
+    			add_location(main, file, 58, 0, 1957);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1455,7 +1455,7 @@ var app = (function () {
     		return true;
     	}
 
-    	async function fetchPingData(address) {
+    	async function fetchData(address) {
     		const response = await fetch(address);
     		let json = await response.json();
 
@@ -1475,7 +1475,7 @@ var app = (function () {
     	let data = undefined;
 
     	onMount(async function () {
-    		fetchPingData("http://localhost:8080/data");
+    		fetchData("https://connectivity-checker.herokuapp.com/data");
     	});
 
     	let darkmode = "off";
@@ -1501,7 +1501,7 @@ var app = (function () {
     		Card,
     		allServicesOnline,
     		calcUptime,
-    		fetchPingData,
+    		fetchData,
     		data,
     		darkmode
     	});

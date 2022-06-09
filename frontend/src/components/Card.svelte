@@ -105,7 +105,7 @@
         border-radius: 3px;
       }
       .ok {
-        background: rgb(76, 226, 76);
+        background: rgb(55, 216, 55);
       }
       .failed {
         background: rgb(240, 69, 69);
