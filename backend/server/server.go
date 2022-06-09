@@ -50,6 +50,7 @@ func getAllData(c *gin.Context) {
 }
 
 func main() {
+	print("Start")
 	router := gin.Default()
 	router.Use(CORSMiddleware())
 	router.GET("/data", getAllData)
