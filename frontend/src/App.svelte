@@ -98,7 +98,7 @@
         // console.log(data);
       })
       .then(() => {
-        if (allServicesOnline()) {
+        if (!allServicesOnline()) {
           changeFavicon();
         }
       });
