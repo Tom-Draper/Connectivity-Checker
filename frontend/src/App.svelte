@@ -7,14 +7,20 @@
       return false;
     }
     for (let i = 0; i < data.data.length; i++) {
-      if (data.data[i].pings[data.data[i].pings.length-1].response <= 0) {
+      if (data.data[i].pings[data.data[i].pings.length - 1].response <= 0) {
         return false;
       }
     }
     return true;
   }
 
-  function calcUptime(pings: { loss: number; response: number }[]) {
+  function calcUptime(
+    pings: {
+      loss: number | null;
+      response: number | null;
+      time: string | null;
+    }[]
+  ) {
     let upCounts = 0;
     for (let i = 0; i < pings.length; i++) {
       if (pings[i].response > 0) {
@@ -25,11 +31,35 @@
     return uptime;
   }
 
+  function changeFavicon() {
+    var link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "icon";
+      document.getElementsByTagName("head")[0].appendChild(link);
+    }
+    link.href = "/img/faviconcross.png";
+  }
+
   async function fetchData(address: string) {
     const response = await fetch(address);
     let json = await response.json();
 
     // Insert computed values for each website
+    return json;
+  }
+
+  function formatData(json: {
+    time: string;
+    data: {
+      name: string;
+      pings: {
+        loss: number | null;
+        response: number | null;
+        time: string | null;
+      }[];
+    }[];
+  }): typeof data {
     for (let i = 0; i < json.data.length; i++) {
       let pings = json.data[i].pings;
       json.data[i].uptime = calcUptime(pings);
@@ -42,20 +72,36 @@
       json.data[i].pings = filler.concat(pings); // Pad with null values to 150 vals
     }
     json.time = new Date(json.time);
-    data = json;
+    return json;
   }
 
-  let data: undefined|{
-    time: Date;
-    data: {
-      name: string;
-      pings: { loss: number; response: number; time: string }[];
-      live: boolean;
-      uptime: string;
-    }[];
-  } = undefined;
+  let data:
+    | {
+        time: Date;
+        data:
+          | {
+              name: string;
+              pings: {
+                loss: number | null;
+                response: number | null;
+                time: string | null;
+              }[];
+              live: boolean;
+              uptime: string;
+            }[];
+      }
+    | undefined = undefined;
   onMount(async function () {
-    fetchData("https://connectivity-checker.herokuapp.com/data");
+    fetchData("https://connectivity-checker.herokuapp.com/data")
+      .then((json) => {
+        data = formatData(json);
+        // console.log(data);
+      })
+      .then(() => {
+        if (allServicesOnline()) {
+          changeFavicon();
+        }
+      });
   });
 
   let darkmode = "off";
@@ -75,8 +121,8 @@
     {#if data != undefined}
       <div class="header">
         {#if !allServicesOnline()}
-          <img class="big-cross" src="./img/cross.webp" alt="" />
-          <h2 class="status">Service down</h2>
+          <img class="big-cross" src="./img/bigcross.png" alt="" />
+          <h2 class="status">Services are down</h2>
         {:else}
           <img class="big-tick" src="./img/bigtick.png" alt="" />
           <h2 class="status">All services are online</h2>

@@ -41,7 +41,9 @@
       <h4 class="name">{data.name}</h4>
       <div class="uptime">
         {#if data.live}
-          <img class="tick" src="./img/tick.png" alt="" />
+          <img class="tick" src="./img/smalltick.png" alt="" />
+        {:else}
+          <img class="tick" src="./img/smallcross.png" alt="" />
         {/if}
         <div class="uptime-text">
           Uptime: {data.uptime}%
@@ -117,6 +119,6 @@
     }
   }
   .ping-graph {
-    margin-right: -50px;
+    margin-right: -60px;
   }
 </style>
