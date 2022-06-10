@@ -2,6 +2,8 @@
 
 A full-stack app to monitor performance of my personal web apps.
 
+Hosted at: https://connectivity-checker.netlify.app/
+
 Includes:
 
 - Frontend built with Svelte
