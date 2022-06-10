@@ -95,7 +95,6 @@
     fetchData("https://connectivity-checker.herokuapp.com/data")
       .then((json) => {
         data = formatData(json);
-        // console.log(data);
       })
       .then(() => {
         if (!allServicesOnline()) {
