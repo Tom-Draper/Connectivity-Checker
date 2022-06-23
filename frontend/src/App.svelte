@@ -64,6 +64,9 @@
       let pings = json.data[i].pings;
       json.data[i].uptime = calcUptime(pings);
       json.data[i].live = pings[pings.length - 1].response > 0;
+      if (pings.length > 150) {
+        pings = pings.slice(0, 150);
+      }
       let filler: null[][] = Array(150 - pings.length).fill({
         loss: null,
         response: null,
