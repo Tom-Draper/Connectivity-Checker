@@ -3,15 +3,19 @@
   import Graph from "./Graph.svelte";
 
   export let data: {
-    live: boolean;
     name: string;
+    pings: {
+      loss: number | null;
+      response: number | null;
+      time: string | null;
+    }[];
+    live: boolean;
     uptime: string;
-    pings: { loss: number; response: number; time: string }[];
   };
 
   let graphData: { x: number[]; y: number[]; type: string };
   function createGraphData(
-    pings: { loss: number; response: number; time: string }[]
+    pings: { loss: number | null; response: number | null; time: string | null }[]
   ): { x: number[]; y: number[]; type: string } {
     let x = new Array(pings.length).fill(1).map((_, i) => i + 1);
     let y: number[] = [];

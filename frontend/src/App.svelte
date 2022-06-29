@@ -97,6 +97,7 @@
   onMount(async function () {
     fetchData("https://connectivity-checker.herokuapp.com/data")
       .then((json) => {
+        console.log(json);
         data = formatData(json);
       })
       .then(() => {
@@ -131,18 +132,11 @@
         {/if}
         <div class="last-updated">{data.time}</div>
       </div>
-      <div class="card">
-        <Card data={data.data[0]} />
-      </div>
-      <div class="card">
-        <Card data={data.data[1]} />
-      </div>
-      <div class="card">
-        <Card data={data.data[2]} />
-      </div>
-      <div class="card">
-        <Card data={data.data[3]} />
-      </div>
+      {#each data.data as _, i}
+        <div class="card">
+          <Card data={data.data[i]} />
+        </div>
+      {/each}
     {/if}
   </div>
 </main>
