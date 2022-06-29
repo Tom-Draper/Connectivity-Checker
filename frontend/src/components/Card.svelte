@@ -42,7 +42,7 @@
 <main>
   {#if data != undefined}
     <div class="pings-container">
-      <h4 class="name">{data.name}</h4>
+      <a class="name" href="{'https://' + data.name}">{data.name}</a>
       <div class="uptime">
         {#if data.live}
           <img class="tick" src="./img/smalltick.png" alt="" />
@@ -84,6 +84,15 @@
       width: fit-content;
       margin: 0 0 1.5rem 0;
       font-size: 1em;
+
+      text-decoration: none;
+      color: black;
+      display: block;
+      margin-block-start: 1.33em;
+      margin-block-end: 1.33em;
+      margin-inline-start: 0px;
+      margin-inline-end: 0px;
+      font-weight: bold;
     }
     .uptime {
       margin-bottom: 5px;
