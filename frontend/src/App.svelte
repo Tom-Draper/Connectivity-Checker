@@ -7,7 +7,8 @@
       return false;
     }
     for (let i = 0; i < data.data.length; i++) {
-      if (data.data[i].pings[data.data[i].pings.length - 1].response <= 0) {
+      let pings = data.data[i].pings
+      if (pings[pings.length - 1].response <= 0) {
         return false;
       }
     }
@@ -97,7 +98,6 @@
   onMount(async function () {
     fetchData("https://connectivity-checker.herokuapp.com/data")
       .then((json) => {
-        console.log(json);
         data = formatData(json);
       })
       .then(() => {
