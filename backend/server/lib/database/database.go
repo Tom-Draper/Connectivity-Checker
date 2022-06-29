@@ -24,7 +24,7 @@ type Data struct {
 	Pings []Ping `json:"pings"`
 }
 
-var Websites = [...]string{"pldashboard.com", "tomdraper.dev", "notion-courses.netlify.app", "colour-themes.netlify.app"}
+var Websites = [...]string{"pldashboard.com", "tomdraper.dev", "notion-courses.netlify.app", "colour-themes.netlify.app", "array-3d-viz.vercel.app"}
 
 func getEnv(key string) string {
 	err := godotenv.Load(".env")
