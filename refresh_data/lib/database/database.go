@@ -23,7 +23,7 @@ type Data struct {
 	Pings []Ping `json:"pings"`
 }
 
-var Websites = [...]string{"pldashboard.com", "tomdraper.dev", "notion-courses.netlify.app", "colour-themes.netlify.app"}
+var Websites = [...]string{"pldashboard.com", "tomdraper.dev", "notion-courses.netlify.app", "colour-themes.netlify.app", "array-3d-viz.vercel.app"}
 
 func getEnv(key string) string {
 	// err := godotenv.Load(".env")
@@ -37,8 +37,6 @@ func getEnv(key string) string {
 }
 
 func UpdateDatabase(collection *mongo.Collection, address string, ping Ping) {
-	// collection := ConnectToDatabase()
-	// Add ping to database
 	opts := options.Update().SetUpsert(true)
 	filter := bson.D{{"name", address}}
 	update := bson.D{{"$push", bson.D{{"pings", ping}}}}
