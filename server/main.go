@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"server/lib/database"
+	"backend/database"
 
 	"github.com/gin-gonic/gin"
 )
