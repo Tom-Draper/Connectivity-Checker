@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -27,11 +27,10 @@ type Data struct {
 var Websites = [...]string{"pldashboard.com", "tomdraper.dev", "notion-courses.netlify.app", "colour-themes.netlify.app", "array-3d-viz.vercel.app"}
 
 func getEnv(key string) string {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatalf("Some error occured. Err: %s", err)
-	}
-
+	// err := godotenv.Load(".env")
+	// if err != nil {
+	// 	log.Fatalf("Some error occured. Err: %s", err)
+	// }
 	val := os.Getenv(key)
 
 	return val
