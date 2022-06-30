@@ -8,10 +8,12 @@ import (
 	"time"
 
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/go-ping/ping"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func pingAddress(address string) {
+	collection := database.ConnectToDatabase()
 	pinger, err := ping.NewPinger(address)
 	if err != nil {
 		panic(err)
@@ -27,7 +29,7 @@ func pingAddress(address string) {
 		fmt.Printf("round-trip min/avg/max/stddev = %v/%v/%v/%v\n",
 			stats.MinRtt, stats.AvgRtt, stats.MaxRtt, stats.StdDevRtt)
 		ping := database.Ping{Loss: stats.PacketLoss, Response: int64(stats.AvgRtt), Time: time.Now().UTC()}
-		database.UpdateDatabase(address, ping)
+		database.UpdateDatabase(collection, address, ping)
 	}
 
 	err = pinger.Run()
@@ -65,6 +67,11 @@ func pingSync() {
 	}
 }
 
+func fetchHttpAddressOpen(address string) {
+	collection := database.ConnectToDatabase()
+	fetchHttpAddress(collection, address)
+}
+
 func fetchHttpAddress(collection *mongo.Collection, address string) {
 	// Measure time to perform a HTTP GET request on the address
 	// HTTP alternative to pingAddress
@@ -75,7 +82,6 @@ func fetchHttpAddress(collection *mongo.Collection, address string) {
 		panic(err)
 	}
 	duration := time.Since(startTime)
-	print(duration)
 
 	ping := database.Ping{Loss: 0, Response: int64(duration), Time: time.Now().UTC()}
 
@@ -84,11 +90,11 @@ func fetchHttpAddress(collection *mongo.Collection, address string) {
 
 func httpAsyncContinuous() {
 	for _, address := range database.Websites {
-		go fetchHttpAddress(address)
+		go fetchHttpAddressOpen(address)
 	}
 	for range time.Tick(time.Minute * 60) {
 		for _, address := range database.Websites {
-			go fetchHttpAddress(address)
+			go fetchHttpAddressOpen(address)
 		}
 	}
 }
@@ -99,7 +105,7 @@ func httpAsync() {
 		wg.Add(1)
 		go func(address string) {
 			defer wg.Done()
-			fetchHttpAddress(address)
+			fetchHttpAddressOpen(address)
 		}(address)
 	}
 	wg.Wait()
