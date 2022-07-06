@@ -1,4 +1,4 @@
-## Connectivity Checker
+# Connectivity Checker
 
 A full-stack app to monitor performance of my personal web apps.
 
