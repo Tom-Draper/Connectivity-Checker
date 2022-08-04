@@ -9,7 +9,7 @@ Includes:
 - Frontend built with Svelte
 - Backend server built with Go
 - MongoDB database
-- A Go program to measure response times and update the database, scheduled as a AWS cron job
+- A Go program to measure response times and update the database, scheduled as a cron job to update hourly
 
 UI of frontend heavily inspired by Better Uptime's status page.
 
