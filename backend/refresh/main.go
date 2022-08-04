@@ -7,7 +7,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/go-ping/ping"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -118,11 +117,6 @@ func httpSync() {
 	}
 }
 
-func LambdaHandler() error {
-	httpSync()
-	return nil
-}
-
 func main() {
-	lambda.Start(LambdaHandler)
+	pingAsync()
 }
