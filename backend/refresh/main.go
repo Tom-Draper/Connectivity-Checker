@@ -12,7 +12,7 @@ import (
 )
 
 func pingAddress(address string) {
-	collection := database.ConnectToDatabase()
+	collection := database.ConnectToDatabase(false)
 	pinger, err := ping.NewPinger(address)
 	if err != nil {
 		panic(err)
@@ -67,7 +67,7 @@ func pingSync() {
 }
 
 func fetchHttpAddressOpen(address string) {
-	collection := database.ConnectToDatabase()
+	collection := database.ConnectToDatabase(false)
 	fetchHttpAddress(collection, address)
 }
 
@@ -111,7 +111,7 @@ func httpAsync() {
 }
 
 func httpSync() {
-	collection := database.ConnectToDatabase()
+	collection := database.ConnectToDatabase(false)
 	for _, address := range database.Websites {
 		fetchHttpAddress(collection, address)
 	}

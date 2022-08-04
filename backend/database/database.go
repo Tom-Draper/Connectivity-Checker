@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	// "github.com/joho/godotenv"
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -26,11 +26,13 @@ type Data struct {
 
 var Websites = [...]string{"pldashboard.com", "tomdraper.dev", "notion-courses.netlify.app", "colour-themes.netlify.app", "array-3d-viz.vercel.app"}
 
-func getEnv(key string) string {
-	// err := godotenv.Load(".env")
-	// if err != nil {
-	// 	log.Fatalf("Some error occured. Err: %s", err)
-	// }
+func getEnv(key string, production bool) string {
+	if !production {
+		err := godotenv.Load(".env")
+		if err != nil {
+			log.Fatalf("Some error occured. Err: %s", err)
+		}
+	}
 	val := os.Getenv(key)
 
 	return val
@@ -52,7 +54,7 @@ func FetchData(id string) Data {
 	}
 
 	var data Data
-	collection := ConnectToDatabase()
+	collection := ConnectToDatabase(true)
 
 	filter := bson.D{{"name", id}}
 
@@ -68,7 +70,7 @@ func FetchData(id string) Data {
 
 func FetchAllData() []Data {
 	var data []Data
-	collection := ConnectToDatabase()
+	collection := ConnectToDatabase(true)
 
 	cur, err := collection.Find(context.TODO(), bson.D{})
 	if err != nil {
@@ -107,9 +109,9 @@ func UpdateDatabase(collection *mongo.Collection, address string, ping Ping) {
 	}
 }
 
-func ConnectToDatabase() *mongo.Collection {
-	username := getEnv("USERNAME")
-	password := getEnv("PASSWORD")
+func ConnectToDatabase(production bool) *mongo.Collection {
+	username := getEnv("USERNAME", production)
+	password := getEnv("PASSWORD", production)
 
 	serverAPIOptions := options.ServerAPI(options.ServerAPIVersion1)
 	clientOptions := options.Client().
