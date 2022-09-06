@@ -65,17 +65,17 @@
       let pings = json.data[i].pings;
       json.data[i].uptime = calcUptime(pings);
       json.data[i].live = pings[pings.length - 1].response > 0;
-      if (pings.length > 150) {
-        pings = pings.slice(0, 150);
+      if (pings.length > 144) {
+        pings = pings.slice(pings.length-144);
       }
-      let filler: null[][] = Array(150 - pings.length).fill({
+      let filler: null[][] = Array(144 - pings.length).fill({
         loss: null,
         response: null,
         time: null,
       });
       json.data[i].pings = filler.concat(pings); // Pad with null values to 150 vals
     }
-    json.time = new Date(json.time);
+    json.time = new Date(json.time).toLocaleDateString('en-GB', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', hour12: false, minute:'2-digit', second:'2-digit'});
     return json;
   }
 
@@ -99,6 +99,7 @@
     fetchData("https://connectivity-checker.herokuapp.com/data")
       .then((json) => {
         data = formatData(json);
+        console.log(data);
       })
       .then(() => {
         if (!allServicesOnline()) {

@@ -54,9 +54,13 @@
         </div>
       </div>
       <div class="pings">
-        {#each data.pings as ping}
+        {#each data.pings as ping, i}
           {#if ping.response > 0}
-            <div class="ping ok" />
+            {#if i % 48 < 24}
+              <div class="ping ok-1" />
+              {:else}
+              <div class="ping ok-2" />
+            {/if}
           {:else if ping.response == 0}
             <div class="ping failed" />
           {:else}
@@ -64,7 +68,7 @@
           {/if}
         {/each}
       </div>
-      <div class="last-hours">Last 150 hours</div>
+      <div class="last-hours">Last 6 days</div>
       <div class="ping-graph">
         {#if graphData != undefined}
           <Graph {graphData} />
@@ -119,8 +123,11 @@
         margin: 0 1px;
         border-radius: 3px;
       }
-      .ok {
+      .ok-1 {
         background: rgb(55, 216, 55);
+      }
+      .ok-2 {
+        background: rgb(89, 240, 89);
       }
       .failed {
         background: rgb(240, 69, 69);
