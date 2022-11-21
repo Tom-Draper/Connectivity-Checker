@@ -17,4 +17,4 @@ UI of frontend heavily inspired by Better Uptime's status page.
 
 ----
 
-![Example](https://user-images.githubusercontent.com/41476809/203048747-bbcf2bc9-621f-4453-851b-a98317b1184a.png)
+![Example](https://user-images.githubusercontent.com/41476809/203049268-d73f21db-8e33-42b2-824b-33c827e6d9ce.png)
