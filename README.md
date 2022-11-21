@@ -6,7 +6,7 @@ Hosted at: https://connectivity-checker.netlify.app/
 
 Components:
 
-- Frontend built with Svelte
+- Frontend built with Svelte, TypeScript and Plotly.js
 - Backend server built with Go
 - MongoDB database storing response times
 - A Go program to measure response times and update the database, scheduled as a cron job to update hourly
