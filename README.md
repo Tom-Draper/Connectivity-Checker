@@ -11,7 +11,7 @@ Components:
 - MongoDB database storing response times
 - A Go program to measure response times and update the database, scheduled as a cron job to update hourly
 
-UI of frontend heavily inspired by Better Uptime's status page.
+UI heavily inspired by Better Uptime's status page.
 
 ![Main](https://user-images.githubusercontent.com/41476809/203048290-9d37147d-d533-49b3-879b-c3a15e754b14.png)
 
