@@ -53,7 +53,7 @@ func getAllData(c *gin.Context) {
 }
 
 func init() {
-	app = gin.Default()
+	app = gin.New()
 
 	r := app.Group("/api") // Vercel - must be /api/xxx
 
