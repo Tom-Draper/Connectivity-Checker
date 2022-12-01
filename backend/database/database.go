@@ -24,7 +24,7 @@ type Data struct {
 	Pings []Ping `json:"pings"`
 }
 
-var Websites = [...]string{"pldashboard.com", "pldashboard-backend.vercel.app", "tomdraper.dev", "my-api-analytics.vercel.app", "api-analytics-server.vercel.app", "notion-courses.netlify.app", "colour-themes.netlify.app", "array-3d-viz.vercel.app", "codedevblog.netlify.app", "persona-api.vercel.app", "connectivity-checker.vercel.app"}
+var Websites = [...]string{"pldashboard.com", "pldashboard-backend.vercel.app", "tomdraper.dev", "my-api-analytics.vercel.app", "api-analytics-server.vercel.app", "notion-courses.netlify.app", "colour-themes.netlify.app", "array-3d-viz.vercel.app", "codedevblog.netlify.app", "persona-api.vercel.app", "connectivity-checker.netlify.app"}
 
 func getEnv(key string, production bool) string {
 	if !production {

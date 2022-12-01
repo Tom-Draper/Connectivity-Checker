@@ -21,11 +21,11 @@ func pingAddressCollection(address string, collection *mongo.Collection) {
 	pinger.SetPrivileged(true)
 
 	pinger.OnFinish = func(stats *ping.Statistics) {
-		fmt.Printf("\n--- %s ping statistics ---\n", stats.Addr)
-		fmt.Printf("%d packets transmitted, %d packets received, %v%% packet loss\n",
-			stats.PacketsSent, stats.PacketsRecv, stats.PacketLoss)
-		fmt.Printf("round-trip min/avg/max/stddev = %v/%v/%v/%v\n",
-			stats.MinRtt, stats.AvgRtt, stats.MaxRtt, stats.StdDevRtt)
+		// fmt.Printf("\n--- %s ping statistics ---\n", stats.Addr)
+		// fmt.Printf("%d packets transmitted, %d packets received, %v%% packet loss\n",
+		// 	stats.PacketsSent, stats.PacketsRecv, stats.PacketLoss)
+		// fmt.Printf("round-trip min/avg/max/stddev = %v/%v/%v/%v\n",
+		// 	stats.MinRtt, stats.AvgRtt, stats.MaxRtt, stats.StdDevRtt)
 		ping := database.Ping{Loss: stats.PacketLoss, Response: int64(stats.AvgRtt), Time: time.Now().UTC()}
 		database.UpdateDatabase(collection, address, ping)
 	}
