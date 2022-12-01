@@ -96,7 +96,7 @@
       }
     | undefined = undefined;
   onMount(async function () {
-    fetchData("https://connectivity-checker.vercel.app/data")
+    fetchData("https://connectivity-checker.vercel.app/api/data")
       .then((json) => {
         data = formatData(json);
       })
