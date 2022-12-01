@@ -68,7 +68,7 @@
           {/if}
         {/each}
       </div>
-      <div class="last-hours">Last 6 days</div>
+      <div class="last-hours">Last 7 days</div>
       <div class="ping-graph">
         {#if graphData != undefined}
           <Graph {graphData} />

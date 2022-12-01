@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { src_url_equal } from "svelte/internal";
   import Card from "./components/Card.svelte";
 
   function allServicesOnline() {
@@ -66,10 +65,10 @@
       let pings = json.data[i].pings;
       json.data[i].uptime = calcUptime(pings);
       json.data[i].live = pings[pings.length - 1].response > 0;
-      if (pings.length > 144) {
-        pings = pings.slice(pings.length-144);
+      if (pings.length > 168) {
+        pings = pings.slice(pings.length-168);
       }
-      let filler: null[][] = Array(144 - pings.length).fill({
+      let filler: null[][] = Array(168 - pings.length).fill({
         loss: null,
         response: null,
         time: null,
@@ -122,7 +121,7 @@
   }
 </script>
 
-<main style="background: {servicesDown ? '#ed8282' : '#a7ffa7'} transparent, transparent, transparent, transparent, transparent, transparent, transparent;">
+<main style="background: linear-gradient(180deg, {servicesDown ? '#ed8282' : '#a7ffa7'}, transparent, transparent, transparent, transparent, transparent, transparent, transparent);">
   <div class="content">
     {#if data != undefined}
       <div class="header">
@@ -181,7 +180,7 @@
       }
       .last-updated {
         font-size: 0.95em;
-        color: var(--secondary-text);
+        // color: var(--secondary-text);
       }
       .status {
         font-size: 2em;
