@@ -24,7 +24,7 @@ type Data struct {
 	Pings []Ping `json:"pings"`
 }
 
-var Websites = [...]string{"pldashboard.com", "tomdraper.dev", "notion-courses.netlify.app", "colour-themes.netlify.app", "array-3d-viz.vercel.app"}
+var Websites = [...]string{"pldashboard.com", "pldashboard-backend.vercel.app", "tomdraper.dev", "my-api-analytics.vercel.app", "api-analytics-server.vercel.app", "notion-courses.netlify.app", "colour-themes.netlify.app", "array-3d-viz.vercel.app", "codedevblog.netlify.app", "persona-api.vercel.app", "connectivity-checker.vercel.app"}
 
 func getEnv(key string, production bool) string {
 	if !production {
@@ -101,12 +101,12 @@ func UpdateDatabase(collection *mongo.Collection, address string, ping Ping) {
 	}
 
 	// Remove oldest ping
-	filter = bson.D{{"name", address}}
-	update = bson.D{{"$pop", bson.D{{"pings", -1}}}}
-	_, err = collection.UpdateOne(context.TODO(), filter, update, opts)
-	if err != nil {
-		panic(err)
-	}
+	// filter = bson.D{{"name", address}}
+	// update = bson.D{{"$pop", bson.D{{"pings", -1}}}}
+	// _, err = collection.UpdateOne(context.TODO(), filter, update, opts)
+	// if err != nil {
+	// 	panic(err)
+	// }
 }
 
 func ConnectToDatabase(production bool) *mongo.Collection {

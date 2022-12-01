@@ -11,6 +11,31 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+func pingAddressCollection(address string, collection *mongo.Collection) {
+	pinger, err := ping.NewPinger(address)
+	if err != nil {
+		panic(err)
+	}
+	pinger.Count = 3
+	pinger.Timeout = time.Second * 5
+	pinger.SetPrivileged(true)
+
+	pinger.OnFinish = func(stats *ping.Statistics) {
+		fmt.Printf("\n--- %s ping statistics ---\n", stats.Addr)
+		fmt.Printf("%d packets transmitted, %d packets received, %v%% packet loss\n",
+			stats.PacketsSent, stats.PacketsRecv, stats.PacketLoss)
+		fmt.Printf("round-trip min/avg/max/stddev = %v/%v/%v/%v\n",
+			stats.MinRtt, stats.AvgRtt, stats.MaxRtt, stats.StdDevRtt)
+		ping := database.Ping{Loss: stats.PacketLoss, Response: int64(stats.AvgRtt), Time: time.Now().UTC()}
+		database.UpdateDatabase(collection, address, ping)
+	}
+
+	err = pinger.Run()
+	if err != nil {
+		panic(err)
+	}
+}
+
 func pingAddress(address string) {
 	collection := database.ConnectToDatabase(false)
 	pinger, err := ping.NewPinger(address)
@@ -18,7 +43,7 @@ func pingAddress(address string) {
 		panic(err)
 	}
 	pinger.Count = 3
-	pinger.Timeout = time.Second * 3
+	pinger.Timeout = time.Second * 4
 	pinger.SetPrivileged(true)
 
 	pinger.OnFinish = func(stats *ping.Statistics) {
@@ -61,8 +86,9 @@ func pingAsync() {
 }
 
 func pingSync() {
+	collection := database.ConnectToDatabase(false)
 	for _, address := range database.Websites {
-		pingAddress(address)
+		pingAddressCollection(address, collection)
 	}
 }
 
@@ -118,5 +144,5 @@ func httpSync() {
 }
 
 func main() {
-	pingAsync()
+	pingSync()
 }
