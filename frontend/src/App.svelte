@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { src_url_equal } from "svelte/internal";
   import Card from "./components/Card.svelte";
 
   function allServicesOnline() {
@@ -101,12 +102,14 @@
         data = formatData(json);
       })
       .then(() => {
-        if (!allServicesOnline()) {
+        servicesDown = !allServicesOnline()
+        if (servicesDown) {
           changeFavicon();
         }
       });
   });
 
+  let servicesDown = false;
   let darkmode = "off";
   if (darkmode == "on") {
     document.documentElement.style.setProperty("--background", "#23272a");
@@ -119,11 +122,11 @@
   }
 </script>
 
-<main>
+<main style="background: {servicesDown ? '#ed8282' : '#a7ffa7'} transparent, transparent, transparent, transparent, transparent, transparent, transparent;">
   <div class="content">
     {#if data != undefined}
       <div class="header">
-        {#if !allServicesOnline()}
+        {#if servicesDown}
           <img class="big-cross" src="./img/bigcross.png" alt="" />
           <h2 class="status">Services are down</h2>
         {:else}
